@@ -1,0 +1,35 @@
+.header {
+  // padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 30px;
+  background-color: #fff;
+
+  &__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__logo {
+    background-color: black;
+    color: #fff;
+    font-weight: 700;
+    line-height: 35px;
+    text-transform: uppercase;
+    letter-spacing: 0.15px;
+    border-radius: 5px;
+    padding: 0 10px;
+    text-decoration: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #4361ee;
+    }
+  }
+
+  &__buttons {
+    display: flex;
+  }
+}
