@@ -1,22 +1,20 @@
 import React from 'react';
 
-import noAvatar from '../../assets/img/noavatar.jpg';
+import noAvatar from '../../assets/img/user-avatar.png';
 
 import styles from './CommentsBlok.module.scss';
 import stylesForm from '../Form.module.scss';
 
 import { blogApi } from '../../redux/api';
 import { useAppSelector } from '../../Hook/redux';
-import { IComment, IUser } from '../../redux/types';
 import Button, { EColor } from '../Button';
 
 interface ICommentsBlok {
   postId: string;
-  // comments: IComment[];
 }
 
 const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
-  const currUser = useAppSelector((state) => state.user.user);
+  const currUser = useAppSelector((state) => state.slice.user);
   const [valueComment, setValueComment] = React.useState('');
   const [createComment] = blogApi.useCreateCommentMutation();
 
@@ -37,13 +35,13 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
         user: currUser._id,
       };
       setValueComment('');
-      await createComment({ infoComment, token: currUser?.token }).unwrap();
+      await createComment({ infoComment, token: currUser?.token });
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onChangeSetValueComment = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeValueComment = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValueComment(e.target.value);
   };
 
@@ -58,10 +56,8 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
               src={obj.user.avatarUrl ? `http://localhost:4444/${obj.user.avatarUrl}` : noAvatar}
               alt="f"
             />
-            {/* <img className={styles.avatar} src={noAvatar} alt="f" /> */}
             <div className={styles.comments__item_content}>
               <span>{obj?.user.fullName}</span>
-              {/* <span>Илья Рауткин</span> */}
               <p>{obj?.text}</p>
             </div>
           </li>
@@ -77,7 +73,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
           <form className={styles.form}>
             <div className={stylesForm.form__row}>
               <input
-                onChange={onChangeSetValueComment}
+                onChange={onChangeValueComment}
                 value={valueComment}
                 className={stylesForm.form__input}
                 required
@@ -86,12 +82,14 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
                 Написать комментарий
               </label>
             </div>
+            {/* <div onClick={onClickCreateComment} className={styles.widthContent}>
+              <Button color={EColor.BLUE}>Отправить</Button>
+            </div> */}
             <div onClick={onClickCreateComment} className={styles.widthContent}>
               <Button color={EColor.BLUE}>Отправить</Button>
             </div>
           </form>
         </div>
-        {/* <button onClick={onClickCreateComment}>Отправить</button> */}
       </div>
     </div>
   );

@@ -3,8 +3,8 @@ import Home from './pages/Home';
 import Registration from './pages/Registration';
 import Login from './pages/Login';
 import Header from './components/Header';
-import AddPost from './pages/AddPost';
-import UpdatePost from './pages/AddPost/UpdatePost';
+import AddPost from './pages/AddUpdatePost/AddPost';
+import UpdatePost from './pages/AddUpdatePost/UpdatePost';
 import FullPost from './pages/FullPost';
 
 function App() {

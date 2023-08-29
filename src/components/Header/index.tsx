@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { setUser } from '../../redux/userSlice';
+import { setUser } from '../../redux/slice';
 import Button, { EColor } from '../Button';
 import Overlay from '../Overlay';
 
@@ -12,7 +12,7 @@ const Header = () => {
   const navigate = useNavigate();
   // const location = useLocation();
   const dispatch = useAppDispatch();
-  const { user } = useAppSelector((state) => state.user);
+  const user = useAppSelector((state) => state.slice.user);
 
   // const [show, setShow] = React.useState(false)
   // const [hidden, setHidden] = React.useState(true)

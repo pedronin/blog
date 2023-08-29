@@ -4,7 +4,7 @@ import { IComment, IInfoComment, IInfoPost, IInfoUser, IPost, IUser, TypeTags } 
 export const blogApi = createApi({
   reducerPath: 'blogApi',
   baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4444' }),
-  tagTypes: ["Posts", "Post", "Comment"],
+  tagTypes: ['Posts', 'Post', 'Comment'],
   endpoints: (builder) => ({
     getMe: builder.query<TypeTags, IInfoUser>({
       query: () => ({
@@ -34,19 +34,20 @@ export const blogApi = createApi({
     // sortToTags: builder.query<IPost[], string>({
     //   query: (tag) => `/posts/search=${tag}`,
     // }),
-    getAllPost: builder.query<IPost[], string>({
-      query: () => '/posts',
-      providesTags: ["Posts"]
+    getAllPost: builder.query<IPost[], { tag: string, sortTo: string }>({
+      // query: (tag) => `/posts?tag=${tag}`,
+      query: ({ tag, sortTo }) => `/posts?sortTo=${sortTo}${tag ? `&tag=${tag}` : ''}`,
+      providesTags: ['Posts'],
     }),
     getOnePost: builder.query<IPost, string>({
       query: (postId) => `/posts/${postId}`,
-      providesTags: ["Post"]
+      providesTags: ['Post'],
     }),
     uploadImage: builder.mutation<{ url: string }, FormData>({
       query: (formData) => ({
         url: `/upload`,
         method: 'POST',
-        body: formData
+        body: formData,
       }),
     }),
     addNewPost: builder.mutation<IPost, { token: string; infoPost: IInfoPost }>({
@@ -59,7 +60,7 @@ export const blogApi = createApi({
         method: 'POST',
         body: infoPost,
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
     removePost: builder.mutation<unknown, { _id: string; token: string }>({
       query: ({ _id, token }) => ({
@@ -70,7 +71,7 @@ export const blogApi = createApi({
           'Content-Type': 'application/json',
         }),
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
     updatePost: builder.mutation<IPost, { _id: string; token: string; infoPost: IInfoPost }>({
       query: ({ _id, token, infoPost }) => ({
@@ -81,11 +82,14 @@ export const blogApi = createApi({
           Authorization: 'Bearer ' + token,
         }),
       }),
-      invalidatesTags: ["Posts"]
+      invalidatesTags: ['Posts'],
     }),
 
-    createComment: builder.mutation<IInfoComment, {infoComment: { postId: string; text: string },  token: string}>({
-      query: ({infoComment,  token}) => ({
+    createComment: builder.mutation<
+      IInfoComment,
+      { infoComment: { postId: string; text: string }; token: string }
+    >({
+      query: ({ infoComment, token }) => ({
         url: `/comments`,
         method: 'POST',
         body: infoComment,
@@ -93,7 +97,7 @@ export const blogApi = createApi({
           Authorization: 'Bearer ' + token,
         }),
       }),
-      invalidatesTags: ["Comment"]
+      invalidatesTags: ['Comment'],
     }),
     // createComment: builder.mutation<IInfoComment, {infoComment: { postId: string, text: string },  token: string}>({
     //   query: ({infoComment,  token}) => ({
@@ -108,9 +112,9 @@ export const blogApi = createApi({
     // }),
     getComments: builder.query<IComment[], string>({
       query: (postId) => ({
-        url: `/comments/${postId}`
+        url: `/comments/${postId}`,
       }),
-      providesTags: ["Comment"]
+      providesTags: ['Comment'],
     }),
   }),
 });

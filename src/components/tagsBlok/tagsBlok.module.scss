@@ -8,19 +8,41 @@
   .tags {
     &__list {
       list-style-type: none;
+      padding: 0;
+
+      h2 {
+        margin: 0;
+        margin-bottom: 10px;
+      }
     }
 
     &__item {
       position: relative;
-      padding-bottom: 15px;
+      padding: 7px 0;
+      padding-left: 40px;
+      border-radius: 6px;
       font-size: 18px;
+      cursor: pointer;
+
+      &:hover {
+        font-weight: 800;
+        // border: 2px solid rgba(0, 0, 0, 0.286);
+        background-color: #e0e0e048;
+
+        &::before {
+          color: #4f4f4f;
+        }
+      }
+      
       &::before {
         content: '#';
         position: absolute;
-        top: -5px;
-        left: -20px;
+        // top: -5px;
+        // left: -20px;
+        top: 2px;
+        left: 10px;
         font-size: 25px;
-        color: #e0e0e0;
+        color: #d6d6d6;
       }
     }
   }

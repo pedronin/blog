@@ -1,3 +1,9 @@
+export interface IInitialStateSlice {
+  user: IUser,
+  searchTag: string,
+  sortTo: 'new' | 'popular'
+}
+
 export interface IUser {
   createdAt: string;
   email: string;
@@ -7,6 +13,7 @@ export interface IUser {
   __v: 0;
   _id: string;
   avatarUrl?: string;
+  token: string
 }
 
 export type TypeTags = string[];

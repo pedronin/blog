@@ -1,0 +1,66 @@
+.root {
+  .button {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+
+    button {
+      margin: 0;
+    }
+  }
+
+  .popup {
+    max-width: 500px;
+    width: 100%;
+    padding: 20px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+
+    list-style: none;
+    border-radius: 10px;
+    background-color: #fafafa;
+    box-shadow: 0px 0px 24px 0 rgba(34, 60, 80, 0.2);
+
+    &__list {
+      position: relative;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+
+      @media (max-width: 425px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    &__item {
+      width: 100%;
+      img {
+        border-radius: 50%;
+        width: 100%;
+        cursor: pointer;
+      }
+    }
+
+    &__close {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+
+      font-size: 20px;
+      border: none;
+      background-color: inherit;
+      cursor: pointer;
+    }
+
+    &.hidden {
+      visibility: hidden;
+    }
+  }
+}

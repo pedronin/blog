@@ -5,55 +5,55 @@ import { IPost } from '../../redux/types';
 
 import pencil from '../../assets/img/pecil.svg';
 import exit from '../../assets/img/exit.svg';
-import noImg from '../../assets/img/image.png';
+import eyeIcon from '../../assets/img/eye.svg';
+import commentIcon from '../../assets/img/comment.svg';
 
 import styles from './PostBlock.module.scss';
 import UserInfo from '../UserInfo';
 import { blogApi } from '../../redux/api';
-import { useAppSelector } from '../../Hook/redux';
+import { useAppDispatch, useAppSelector } from '../../Hook/redux';
+import { setSearchTag } from '../../redux/slice';
 
 const PostBlock: React.FC<IPost> = ({
   imageUrl,
   _id,
   title,
-  text,
   createdAt,
   updatedAt,
   user,
   viewsCount,
   commentsCount,
   tags,
-  __v,
 }) => {
-  const navigate = useNavigate()
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [removePost] = blogApi.useRemovePostMutation();
 
-  const [removePost, { isLoading }] = blogApi.useRemovePostMutation();
-
-  const currentUser = useAppSelector((state) => state.user.user);
+  const currentUser = useAppSelector((state) => state.slice.user);
 
   const onClickRemovePost = async () => {
     if (currentUser?._id === user._id) {
-      if (!isLoading) {
-        try {
-          const token = currentUser.token;
-          await removePost({ _id, token }).unwrap();
-          console.log(true);
-          // navigate('/');
-        } catch (error) {
-          console.error(error);
-        }
+      try {
+        const token = currentUser.token;
+        await removePost({ _id, token });
+      } catch (error) {
+        console.error(error);
       }
     } else {
       alert('Доступно только для создателя поста!');
     }
   };
 
-  const onClickUpdatePost = () => {
+  const onClickToUpdatePost = () => {
     if (currentUser?._id === user._id) {
-      navigate(`/update/${_id}`)
+      navigate(`/update/${_id}`);
     } else {
       alert('Доступно только для создателя поста!');
     }
+  };
+
+  const onClickSetSearchTeg = (tag: string) => {
+    dispatch(setSearchTag(tag));
   };
 
   return (
@@ -62,16 +62,15 @@ const PostBlock: React.FC<IPost> = ({
         <button onClick={onClickRemovePost}>
           <img className={styles.img__remove} src={exit} alt="" />
         </button>
-        <button onClick={onClickUpdatePost}>
-          {/* <Link to={`/update/${_id}`}> */}
-            <img src={pencil} className={styles.img__edit} alt="" />
-          {/* </Link> */}
+        <button onClick={onClickToUpdatePost}>
+          <img src={pencil} className={styles.img__edit} alt="" />
         </button>
       </div>
-      {/* noImg */}
-      {imageUrl && <img className={styles.image} src={`http://localhost:4444/${imageUrl}`} alt="" />}
+      {imageUrl && (
+        <img className={styles.image} src={`http://localhost:4444/${imageUrl}`} alt="" />
+      )}
       <div className={styles.wrapper}>
-        <UserInfo {...user} createdAt={createdAt} />
+        <UserInfo {...user} updatedAt={updatedAt} />
         <div className={styles.indention}>
           <h2 className={styles.title}>
             <Link to={`/posts/${_id}`}>{title}</Link>
@@ -79,19 +78,18 @@ const PostBlock: React.FC<IPost> = ({
 
           <ul className={styles.tags}>
             {tags.map((tag) => (
-              <li key={tag}>
-                <a href={`/tag/${tag}`}>{'#' + tag}</a>
+              <li onClick={() => onClickSetSearchTeg(tag)} key={tag}>
+                {'#' + tag}
               </li>
             ))}
           </ul>
-          {/* {children && <div className={styles.content}>{children}</div>} */}
           <ul className={styles.post__details}>
             <li>
-              {/* <img src={deleteSvg} alt="" /> */}
+              <img src={eyeIcon} alt="" />
               <span>{viewsCount}</span>
             </li>
             <li>
-              {/* <img src={deleteSvg} alt="" /> */}
+              <img src={commentIcon} alt="" />
               <span>{commentsCount}</span>
             </li>
           </ul>

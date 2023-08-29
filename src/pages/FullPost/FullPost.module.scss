@@ -75,15 +75,11 @@
       margin-right: 20px;
       opacity: 0.5;
 
-      svg {
-        font-size: 18px;
+      img {
+        width: 17px;
         margin-right: 5px;
+        pointer-events: none;
       }
     }
   }
 }
-
-
-// @media (max-width: 425px) {
-  
-// }

@@ -1,19 +1,30 @@
 import React from 'react';
 
-import styles from './tagsBlok.module.scss';
+import styles from './TagsBlok.module.scss';
 import { TypeTags } from '../../redux/types';
+import { useAppDispatch } from '../../Hook/redux';
+import { setSearchTag } from '../../redux/slice';
 
 interface ITagsBlock {
   tags: TypeTags;
 }
 
 const TagsBlock: React.FC<ITagsBlock> = ({ tags }) => {
+  const dispatch = useAppDispatch();
+
+  const onClickSetSearchTag = (tag: string) => {
+    dispatch(setSearchTag(tag));
+  };
+
   return (
     <div className={`${styles.root} tags`}>
       <h2 className={styles.title}>Тэги</h2>
       <ul className={styles.tags__list}>
+      <h2 onClick={() => onClickSetSearchTag('')} className={styles.tags__item}>Все статьи</h2>
         {tags.map((tag) => (
-          <li className={styles.tags__item} key={tag}>{tag}</li>
+          <li onClick={() => onClickSetSearchTag(tag)} className={styles.tags__item} key={tag}>
+            {tag}
+          </li>
         ))}
       </ul>
     </div>

@@ -4,22 +4,38 @@
   font-size: 15px;
   border-radius: 5px;
   cursor: pointer;
+  transition: box-shadow 0.3s ease;
 }
 
 .blue {
   border: none;
   background-color: #4361ee;
   color: #fff;
+
+  &:hover {
+    box-shadow: 0px 5px 25px 5px rgba(60, 76, 139, 0.35);
+    transition: box-shadow 0.3s ease;
+  }
 }
 
 .red {
   border: none;
   background-color: #d32f2f;
   color: #fff;
+
+  &:hover {
+    box-shadow: 0px 5px 25px 5px rgba(64, 39, 39, 0.35);
+    transition: box-shadow 0.3s ease;
+  }
 }
 
 .border__blue {
   border: 1px solid #4361ee;
   background-color: #fff;
   color: #4361ee;
+
+  &:hover {
+    box-shadow: 0px 0px 25px 3px rgba(64, 69, 94, 0.15);
+    transition: box-shadow 0.3s ease;
+  }
 }
