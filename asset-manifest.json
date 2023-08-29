@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/blog-react.js/static/css/main.2d4239d0.css",
+    "main.js": "/blog-react.js/static/js/main.6469547f.js",
+    "static/media/marked.cjs": "/blog-react.js/static/media/marked.9d11e79e65a241a47955.cjs",
+    "static/media/user-avatar.png": "/blog-react.js/static/media/user-avatar.d0ddcc17a51b086f5564.png",
+    "static/media/camera.svg": "/blog-react.js/static/media/camera.9dfda275a6dae6d1b950c0a479730997.svg",
+    "static/media/comment.svg": "/blog-react.js/static/media/comment.da8e8f2a78197041bf2ebfac7350349b.svg",
+    "static/media/eye.svg": "/blog-react.js/static/media/eye.0e64e58bf2327075d9b37b7533e397c2.svg",
+    "static/media/pecil.svg": "/blog-react.js/static/media/pecil.983071b2a40f3f908c319e3d1cc78a07.svg",
+    "index.html": "/blog-react.js/index.html",
+    "static/media/exit.svg": "/blog-react.js/static/media/exit.ef447352cef03d6742e53e4ffb789ecc.svg",
+    "main.2d4239d0.css.map": "/blog-react.js/static/css/main.2d4239d0.css.map",
+    "main.6469547f.js.map": "/blog-react.js/static/js/main.6469547f.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2d4239d0.css",
+    "static/js/main.6469547f.js"
+  ]
+}
