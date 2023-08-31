@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IComment, IInfoComment, IInfoPost, IInfoUser, IPost, IUser, TypeTags } from './types';
+import { IComment, IPost, TypeTags, IInfoPost, IInfoComment, IInfoUser } from './types';
 
 export const blogApi = createApi({
   reducerPath: 'blogApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4444' }),
+  // baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4444' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-ys3l.onrender.com' }),
   tagTypes: ['Posts', 'Post', 'Comment'],
   endpoints: (builder) => ({
     getMe: builder.query<TypeTags, IInfoUser>({
@@ -31,11 +32,7 @@ export const blogApi = createApi({
         url: '/posts/tags',
       }),
     }),
-    // sortToTags: builder.query<IPost[], string>({
-    //   query: (tag) => `/posts/search=${tag}`,
-    // }),
-    getAllPost: builder.query<IPost[], { tag: string, sortTo: string }>({
-      // query: (tag) => `/posts?tag=${tag}`,
+    getAllPost: builder.query<IPost[], { tag: string; sortTo: string }>({
       query: ({ tag, sortTo }) => `/posts?sortTo=${sortTo}${tag ? `&tag=${tag}` : ''}`,
       providesTags: ['Posts'],
     }),

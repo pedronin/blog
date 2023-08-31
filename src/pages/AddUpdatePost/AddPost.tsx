@@ -23,12 +23,10 @@ const AddPost = () => {
   const [invalidField, setInvalidField] = React.useState<string[]>();
 
   const [uploadImage] = blogApi.useUploadImageMutation();
-  const [addNewPost, { isLoading }] = blogApi.useAddNewPostMutation();
-  // const canSave = [valTitle, valText].every(Boolean) && !isLoading;
+  const [addNewPost] = blogApi.useAddNewPostMutation();
 
   const handleChangeFile = async (e: React.FormEvent<HTMLInputElement>): Promise<void> => {
     try {
-      // специальный формат который позволит вшивать картинку и отправлять ее на бэк
       const formData = new FormData();
       if (e.currentTarget.files) {
         formData.append('image', e.currentTarget.files[0]);
@@ -101,7 +99,7 @@ const AddPost = () => {
             </div>
           )}
           {imageUrl && (
-            <img className={styles.preview} src={`http://localhost:4444/${imageUrl}`}></img>
+            <img className={styles.preview} src={`https://blog-ys3l.onrender.com/${imageUrl}`}></img>
           )}
 
           {invalidField?.includes('title') ? (

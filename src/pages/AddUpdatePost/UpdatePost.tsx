@@ -115,7 +115,7 @@ const AddPost = () => {
             </div>
           )}
           {imageUrl && (
-            <img className={styles.preview} src={`http://localhost:4444/${imageUrl}`}></img>
+            <img className={styles.preview} src={`https://blog-ys3l.onrender.com/${imageUrl}`}></img>
           )}
           {invalidField?.includes('title') ? (
             <span className={styles.invalid_field}>

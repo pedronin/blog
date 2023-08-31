@@ -1,8 +1,11 @@
 .header {
-  // padding: 10px 0;
   border-bottom: 1px solid #e0e0e0;
   margin-bottom: 30px;
   background-color: #fff;
+
+  @media (max-width: 768.1px) {
+    margin-bottom: 10px;
+  }
 
   &__inner {
     max-width: 1200px;

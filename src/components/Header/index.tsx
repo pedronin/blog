@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { setUser } from '../../redux/slice';
+import { setSearchTag, setUser } from '../../redux/slice';
 import Button, { EColor } from '../Button';
 import Overlay from '../Overlay';
 
@@ -37,20 +37,23 @@ const Header = () => {
 
   //   // setTimeout(() => {
   //   // }, 00)
-    
+
   //   setTimeout(() => {
   //     setShow(false)
   //     setHidden(true)
   //   }, 1800)
 
-
   // }, [location.pathname]);
+
+  const onClickToHome = () => {
+    dispatch(setSearchTag(''));
+  };
 
   return (
     <div className={styles.header}>
       {/* <Overlay show={show} hidden={hidden} /> */}
       <div className={styles.header__inner}>
-        <Link to="/">
+        <Link onClick={onClickToHome} to="/">
           <div className={styles.header__logo}>Blog</div>
         </Link>
 

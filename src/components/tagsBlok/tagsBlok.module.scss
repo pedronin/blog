@@ -5,6 +5,10 @@
   border-radius: 5px;
   height: 100%;
 
+  @media (max-width: 768.1px) {
+    display: none;
+  }
+
   .tags {
     &__list {
       list-style-type: none;

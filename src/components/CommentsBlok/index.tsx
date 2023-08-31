@@ -23,7 +23,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
   const onClickCreateComment = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (currUser === null) {
-      alert('Для начала авторизируйтесь');
+      return alert('Для начала авторизируйтесь');
     }
     if (!postId) {
       return;
@@ -53,7 +53,11 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
           <li className={styles.comments__item} key={obj.text + obj.user}>
             <img
               className={styles.avatar}
-              src={obj.user.avatarUrl ? `http://localhost:4444/${obj.user.avatarUrl}` : noAvatar}
+              src={
+                obj.user.avatarUrl
+                  ? `https://blog-ys3l.onrender.com/${obj.user.avatarUrl}`
+                  : noAvatar
+              }
               alt="f"
             />
             <div className={styles.comments__item_content}>
@@ -67,7 +71,11 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
         <div className="flex">
           <img
             className={styles.avatar}
-            src={currUser?.avatarUrl ? `http://localhost:4444/${currUser?.avatarUrl}` : noAvatar}
+            src={
+              currUser?.avatarUrl
+                ? `https://blog-ys3l.onrender.com/${currUser?.avatarUrl}`
+                : noAvatar
+            }
             alt=""
           />
           <form className={styles.form}>

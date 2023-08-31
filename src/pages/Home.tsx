@@ -13,7 +13,14 @@ const Home = () => {
 
   const { searchTag, sortTo } = useAppSelector((state) => state.slice);
 
-  const { data: postItems } = blogApi.useGetAllPostQuery({ tag: searchTag || '', sortTo });
+  const {
+    data: postItems,
+    isLoading: isLoadingItems,
+    isFetching,
+  } = blogApi.useGetAllPostQuery({
+    tag: searchTag || '',
+    sortTo,
+  });
   const { data: tagsItems } = blogApi.useGetAllTagsQuery('');
 
   const onClickToActiveTab = (sortTo: string): void => {
@@ -21,14 +28,16 @@ const Home = () => {
     dispatch(setSortTo(sortTo));
   };
 
-  if (!postItems || !tagsItems) {
+  if (isLoadingItems) {
     return <Loader />;
   }
 
   return (
     <div className="container">
       <div className="posts__sort">
-        <button onClick={() => onClickToActiveTab('new')} className={activeTab === 'new' ? 'active' : ''}>
+        <button
+          onClick={() => onClickToActiveTab('new')}
+          className={activeTab === 'new' ? 'active' : ''}>
           Новые
         </button>
         <button
@@ -38,12 +47,18 @@ const Home = () => {
         </button>
       </div>
       <div className="flex">
-        <div className="left">
-          <div className="posts">
-            {postItems ? postItems.map((post) => <PostBlock {...post} key={post._id} />) : ''}
-          </div>
+        <div className="posts">
+          {postItems ? (
+            isFetching ? (
+              <Loader widthContent={true} backW={true} />
+            ) : (
+              postItems.map((post) => <PostBlock {...post} key={post._id} />)
+            )
+          ) : (
+            ''
+          )}
         </div>
-        <TagsBlock tags={tagsItems} />
+        <TagsBlock tags={tagsItems || []} />
       </div>
     </div>
   );
