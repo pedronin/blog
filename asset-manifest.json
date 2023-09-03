@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/blog-react.js/static/css/main.7308ad9b.css",
-    "main.js": "/blog-react.js/static/js/main.b590d8d3.js",
+    "main.css": "/blog-react.js/static/css/main.765ca7a2.css",
+    "main.js": "/blog-react.js/static/js/main.c41c0fbf.js",
     "static/media/marked.cjs": "/blog-react.js/static/media/marked.9d11e79e65a241a47955.cjs",
     "static/media/user-avatar.png": "/blog-react.js/static/media/user-avatar.d0ddcc17a51b086f5564.png",
     "static/media/camera.svg": "/blog-react.js/static/media/camera.9dfda275a6dae6d1b950c0a479730997.svg",
@@ -10,11 +10,11 @@
     "static/media/pecil.svg": "/blog-react.js/static/media/pecil.983071b2a40f3f908c319e3d1cc78a07.svg",
     "index.html": "/blog-react.js/index.html",
     "static/media/exit.svg": "/blog-react.js/static/media/exit.ef447352cef03d6742e53e4ffb789ecc.svg",
-    "main.7308ad9b.css.map": "/blog-react.js/static/css/main.7308ad9b.css.map",
-    "main.b590d8d3.js.map": "/blog-react.js/static/js/main.b590d8d3.js.map"
+    "main.765ca7a2.css.map": "/blog-react.js/static/css/main.765ca7a2.css.map",
+    "main.c41c0fbf.js.map": "/blog-react.js/static/js/main.c41c0fbf.js.map"
   },
   "entrypoints": [
-    "static/css/main.7308ad9b.css",
-    "static/js/main.b590d8d3.js"
+    "static/css/main.765ca7a2.css",
+    "static/js/main.c41c0fbf.js"
   ]
 }
