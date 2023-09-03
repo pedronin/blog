@@ -4,6 +4,7 @@ export const isValidField = (err: any): string[] => {
     // console.log(Object.values(data).map((el: any) => el.path));
     return Object.values(data).map((el: any) => el.path);
   } else {
+    alert('Проверьте подключение к интернету или зайдите позже');
     return [];
   }
 };

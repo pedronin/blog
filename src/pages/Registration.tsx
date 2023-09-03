@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 
 import userAvatarImg from '../assets/img/user-avatar.png';
 import cameraImg from '../assets/img/camera.svg';
-import PopupAvatar from '../components/PopupAvatar.tsx';
+import PopupAvatar from '../components/PopupAvatar';
 import { isValidField } from '../utils/isValidField';
 
 const Registration: React.FC = () => {

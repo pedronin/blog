@@ -5,6 +5,7 @@ const initialState: IInitialStateSlice = {
   user: JSON.parse(localStorage.getItem('user') || '{}'),
   searchTag: '',
   sortTo: 'new',
+  firstLaunch: true,
 };
 
 const slice = createSlice({
@@ -20,8 +21,11 @@ const slice = createSlice({
     setSortTo(state, action) {
       state.sortTo = action.payload;
     },
+    setFirstLaunch(state) {
+      state.firstLaunch = false;
+    },
   },
 });
 
-export const { setUser, setSearchTag, setSortTo } = slice.actions;
+export const { setUser, setSearchTag, setSortTo, setFirstLaunch } = slice.actions;
 export default slice.reducer;

@@ -36,7 +36,7 @@ const Login = () => {
       setInvalidField([]);
       const invalid = isValidField(err);
       if (invalid.length === 0) {
-        setMessage(err.data.message);
+        setMessage(err.data?.message);
       } else {
         setInvalidField(invalid);
       }

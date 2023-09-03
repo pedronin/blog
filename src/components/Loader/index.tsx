@@ -1,5 +1,6 @@
 import React from 'react';
 import styles from './Loader.module.scss';
+import PopupNotice from '../PopupNotice';
 
 interface ILoader {
   backW?: boolean;
@@ -8,12 +9,15 @@ interface ILoader {
 
 const Loader: React.FC<ILoader> = ({ backW, widthContent }) => {
   return (
-    <div
-      className={`${styles.loader__container} ${backW ? styles.loader__container_white : ''} ${
-        widthContent ? styles.loader__container_width : ''
-      }`}>
-      <div className={styles.spinner}></div>
-    </div>
+    <>
+      <PopupNotice />
+      <div
+        className={`${styles.loader__container} ${backW ? styles.loader__container_white : ''} ${
+          widthContent ? styles.loader__container_width : ''
+        }`}>
+        <div className={styles.spinner}></div>
+      </div>
+    </>
   );
 };
 

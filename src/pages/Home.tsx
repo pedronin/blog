@@ -5,7 +5,7 @@ import PostBlock from '../components/PostBlock';
 import TagsBlock from '../components/TagsBlok';
 import Loader from '../components/Loader';
 import { useAppDispatch, useAppSelector } from '../Hook/redux';
-import { setSortTo } from '../redux/slice';
+import { setFirstLaunch, setSortTo } from '../redux/slice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -21,7 +21,14 @@ const Home = () => {
     tag: searchTag || '',
     sortTo,
   });
-  const { data: tagsItems } = blogApi.useGetAllTagsQuery('');
+
+  React.useEffect(() => {
+    if (postItems?.length) {
+      dispatch(setFirstLaunch());
+    }
+  }, [postItems]);
+
+  const { data: tagsItems, error } = blogApi.useGetAllTagsQuery('');
 
   const onClickToActiveTab = (sortTo: string): void => {
     setActiveTab(sortTo);
@@ -46,18 +53,20 @@ const Home = () => {
           Популярные
         </button>
       </div>
+
       <div className="flex">
-        <div className="posts">
-          {postItems ? (
-            isFetching ? (
+        {error ? <h1>Произошла ошибка при загрузке. Проверьту подключение</h1> : ''}
+        {postItems ? (
+          <div className="posts">
+            {isFetching ? (
               <Loader widthContent={true} backW={true} />
             ) : (
               postItems.map((post) => <PostBlock {...post} key={post._id} />)
-            )
-          ) : (
-            ''
-          )}
-        </div>
+            )}
+          </div>
+        ) : (
+          ''
+        )}
         <TagsBlock tags={tagsItems || []} />
       </div>
     </div>

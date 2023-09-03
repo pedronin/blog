@@ -1,7 +1,8 @@
 export interface IInitialStateSlice {
   user: IUser,
   searchTag: string,
-  sortTo: 'new' | 'popular'
+  sortTo: 'new' | 'popular',
+  firstLaunch: boolean
 }
 
 export interface IUser {

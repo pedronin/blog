@@ -32,7 +32,6 @@ const AddPost = () => {
         formData.append('image', e.currentTarget.files[0]);
       }
       const data = await uploadImage(formData).unwrap();
-      console.log(data);
       setImageUrl(data.url);
     } catch (error) {
       console.log(error);
