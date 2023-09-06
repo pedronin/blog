@@ -26,8 +26,6 @@ const Registration: React.FC = () => {
   const [newUser] = blogApi.useNewUserMutation();
   const [uploadImage] = blogApi.useUploadImageMutation();
 
-  // const canSave = [fullName, email, password].every(Boolean);
-
   const onClickCreateUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const obj = {
@@ -60,6 +58,7 @@ const Registration: React.FC = () => {
         formData.append('image', e.currentTarget.files[0]);
       }
       const data = await uploadImage(formData).unwrap();
+      console.log(data.url);
       setAvatarUrl(data.url);
     } catch (err) {
       alert('Ошибка при загрузке аватарки');
@@ -87,7 +86,7 @@ const Registration: React.FC = () => {
         <form action="">
           <h4 className={styles.title}>Создание аккаунта</h4>
           <div onClick={() => inputFileRef.current?.click()} className={styles.avatar}>
-          <img src={avatarUrl ? `https://blog-ys3l.onrender.com/${avatarUrl}` : userAvatarImg} alt="" />
+          <img src={avatarUrl ? `http://45.67.58.211:4444/${avatarUrl}` : userAvatarImg} alt="" />
             <div className={styles.avatar_camera}>
               <img src={cameraImg} alt="" />
             </div>

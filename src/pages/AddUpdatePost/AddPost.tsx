@@ -47,15 +47,11 @@ const AddPost = () => {
     };
 
     try {
-      // ПОГУГЛИ ИПРАВИТЬ как я понимаю, если не сохранить данные, то реакт не находит их, 
-      // и блок catch не выполнется, т е не приходит ответ а только ошибка
-      // ваще не понял как это работает
       const data = await addNewPost({ token, infoPost }).unwrap();
       navigate('/');
     } catch (error) {
       setInvalidField([]);
       setInvalidField(isValidField(error));
-      // console.error(err);
     }
   };
 
@@ -98,7 +94,9 @@ const AddPost = () => {
             </div>
           )}
           {imageUrl && (
-            <img className={styles.preview} src={`https://blog-ys3l.onrender.com/${imageUrl}`}></img>
+            <img
+              className={styles.preview}
+              src={`http://45.67.58.211:4444/${imageUrl}`}></img>
           )}
 
           {invalidField?.includes('title') ? (

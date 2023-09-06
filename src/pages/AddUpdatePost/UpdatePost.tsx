@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import SimpleMDE from 'react-simplemde-editor';
 
@@ -9,7 +8,6 @@ import 'easymde/dist/easymde.min.css';
 import { blogApi } from '../../redux/api';
 import { useAppSelector } from '../../Hook/redux';
 import Button, { EColor } from '../../components/Button';
-import Loader from '../../components/Loader';
 import { isValidField } from '../../utils/isValidField';
 
 const AddPost = () => {
@@ -27,7 +25,6 @@ const AddPost = () => {
   const [uploadImage] = blogApi.useUploadImageMutation();
   const [updatePost] = blogApi.useUpdatePostMutation();
 
-  // ПОГУГЛИ ИСПРАВИТЬ. Не правильно понимаю, но как сделать правильно - не знаю
   const { data } = blogApi.useGetOnePostQuery(id || '');
 
   React.useEffect(() => {
@@ -55,7 +52,6 @@ const AddPost = () => {
       const data = await updatePost({ _id: id, token, infoPost }).unwrap();
       navigate('/');
     } catch (error) {
-      // console.log(error);
       setInvalidField([]);
       setInvalidField(isValidField(error));
     }
@@ -115,7 +111,7 @@ const AddPost = () => {
             </div>
           )}
           {imageUrl && (
-            <img className={styles.preview} src={`https://blog-ys3l.onrender.com/${imageUrl}`}></img>
+            <img className={styles.preview} src={`http://45.67.58.211:4444/${imageUrl}`}></img>
           )}
           {invalidField?.includes('title') ? (
             <span className={styles.invalid_field}>

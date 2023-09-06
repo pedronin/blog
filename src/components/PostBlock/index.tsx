@@ -67,7 +67,7 @@ const PostBlock: React.FC<IPost> = ({
         </button>
       </div>
       {imageUrl && (
-        <img className={styles.image} src={`https://blog-ys3l.onrender.com/${imageUrl}`} alt="" />
+        <img className={styles.image} src={`http://45.67.58.211:4444/${imageUrl}`} alt="" />
       )}
       <div className={styles.wrapper}>
         <UserInfo {...user} updatedAt={updatedAt} />

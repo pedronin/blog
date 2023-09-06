@@ -42,7 +42,7 @@ const FullPost = () => {
       <div className={styles.content}>
         <img
           className={styles.content__preview}
-          src={imageUrl ? `https://blog-ys3l.onrender.com/${imageUrl}` : ''}
+          src={imageUrl ? `http://45.67.58.211:4444/${imageUrl}` : ''}
           alt=""
         />
         <div className={styles.content__wrapper}>

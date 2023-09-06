@@ -55,7 +55,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
               className={styles.avatar}
               src={
                 obj.user.avatarUrl
-                  ? `https://blog-ys3l.onrender.com/${obj.user.avatarUrl}`
+                  ? `http://45.67.58.211:4444/${obj.user.avatarUrl}`
                   : noAvatar
               }
               alt="f"
@@ -73,7 +73,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
             className={styles.avatar}
             src={
               currUser?.avatarUrl
-                ? `https://blog-ys3l.onrender.com/${currUser?.avatarUrl}`
+                ? `http://45.67.58.211:4444/${currUser?.avatarUrl}`
                 : noAvatar
             }
             alt=""
@@ -90,9 +90,6 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
                 Написать комментарий
               </label>
             </div>
-            {/* <div onClick={onClickCreateComment} className={styles.widthContent}>
-              <Button color={EColor.BLUE}>Отправить</Button>
-            </div> */}
             <div onClick={onClickCreateComment} className={styles.widthContent}>
               <Button color={EColor.BLUE}>Отправить</Button>
             </div>

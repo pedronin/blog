@@ -56,6 +56,7 @@ const Home = () => {
 
       <div className="flex">
         {error ? <h1>Произошла ошибка при загрузке. Проверьту подключение</h1> : ''}
+        {!postItems?.length && !error ? <h1>Пока нет не одной написанной статьи.</h1> : ''}
         {postItems ? (
           <div className="posts">
             {isFetching ? (

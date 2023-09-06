@@ -11,7 +11,6 @@ export enum EColor {
 interface IButton {
   color: EColor;
   children: string;
-  // onClick?: (e: React.MouseEvent) => Promise<void>;
 }
 
 const Button: React.FC<IButton> = ({ color, children }) => {

@@ -3,8 +3,7 @@ import { IComment, IPost, TypeTags, IInfoPost, IInfoComment, IInfoUser } from '.
 
 export const blogApi = createApi({
   reducerPath: 'blogApi',
-  // baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:4444' }),
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-ys3l.onrender.com' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'http://45.67.58.211:4444/' }),
   tagTypes: ['Posts', 'Post', 'Comment'],
   endpoints: (builder) => ({
     getMe: builder.query<TypeTags, IInfoUser>({
@@ -96,17 +95,6 @@ export const blogApi = createApi({
       }),
       invalidatesTags: ['Comment'],
     }),
-    // createComment: builder.mutation<IInfoComment, {infoComment: { postId: string, text: string },  token: string}>({
-    //   query: ({infoComment,  token}) => ({
-    //     url: `/posts/comment/${infoComment.postId}`,
-    //     method: 'put',
-    //     body: infoComment,
-    //     headers: new Headers({
-    //       Authorization: 'Bearer ' + token,
-    //     }),
-    //   }),
-    //   invalidatesTags: ["Post"]
-    // }),
     getComments: builder.query<IComment[], string>({
       query: (postId) => ({
         url: `/comments/${postId}`,

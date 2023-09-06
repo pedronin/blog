@@ -51,7 +51,6 @@ export interface IInfoUser {
 export interface IComment {
   _id: string;
   text: string;
-  // postId: string;
   user: IUser;
   createdAt: string;
   updatedAt: string;

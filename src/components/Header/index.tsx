@@ -1,21 +1,16 @@
 import React from 'react';
 
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './Header.module.scss';
 import { useAppDispatch, useAppSelector } from '../../Hook/redux';
 import { setSearchTag, setUser } from '../../redux/slice';
 import Button, { EColor } from '../Button';
-import Overlay from '../Overlay';
 
 const Header = () => {
   const navigate = useNavigate();
-  // const location = useLocation();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.slice.user);
-
-  // const [show, setShow] = React.useState(false)
-  // const [hidden, setHidden] = React.useState(true)
 
   const onClickLogout = () => {
     if (window.confirm('Вы действительно хотите выйти?')) {
@@ -28,30 +23,12 @@ const Header = () => {
     localStorage.setItem('user', JSON.stringify(user));
   }, [user]);
 
-  // при переходе между страницами запускаем анимацию
-  // React.useEffect(() => {
-  //   console.log(location);
-
-  //   setHidden(false)
-  //   setShow(true)
-
-  //   // setTimeout(() => {
-  //   // }, 00)
-
-  //   setTimeout(() => {
-  //     setShow(false)
-  //     setHidden(true)
-  //   }, 1800)
-
-  // }, [location.pathname]);
-
   const onClickToHome = () => {
     dispatch(setSearchTag(''));
   };
 
   return (
     <div className={styles.header}>
-      {/* <Overlay show={show} hidden={hidden} /> */}
       <div className={styles.header__inner}>
         <Link onClick={onClickToHome} to="/">
           <div className={styles.header__logo}>Blog</div>
