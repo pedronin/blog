@@ -3,7 +3,7 @@ import { IComment, IPost, TypeTags, IInfoPost, IInfoComment, IInfoUser } from '.
 
 export const blogApi = createApi({
   reducerPath: 'blogApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://45.67.58.211:4444/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://pedronin.ru/' }),
   tagTypes: ['Posts', 'Post', 'Comment'],
   endpoints: (builder) => ({
     getMe: builder.query<TypeTags, IInfoUser>({
