@@ -42,7 +42,7 @@ const FullPost = () => {
       <div className={styles.content}>
         <img
           className={styles.content__preview}
-          src={imageUrl ? `http://45.67.58.211:4444/${imageUrl}` : ''}
+          src={imageUrl ? `https://pedronin.ru/${imageUrl}` : ''}
           alt=""
         />
         <div className={styles.content__wrapper}>

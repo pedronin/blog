@@ -96,7 +96,7 @@ const AddPost = () => {
           {imageUrl && (
             <img
               className={styles.preview}
-              src={`http://45.67.58.211:4444/${imageUrl}`}></img>
+              src={`https://pedronin.ru/${imageUrl}`}></img>
           )}
 
           {invalidField?.includes('title') ? (

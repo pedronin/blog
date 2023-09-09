@@ -27,7 +27,7 @@ const PopupAvatar: React.FC<IPopupAvatar> = ({ onChangeAvatarUrl }) => {
             <li className={styles.popup__item} key={i}>
               <img
                 onClick={() => onClickAvatar(i)}
-                src={`http://45.67.58.211:4444/uploads/hero${i + 1}`}
+                src={`https://pedronin.ru/uploads/hero${i + 1}`}
                 alt="i"
               />
             </li>

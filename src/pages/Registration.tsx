@@ -86,7 +86,7 @@ const Registration: React.FC = () => {
         <form action="">
           <h4 className={styles.title}>Создание аккаунта</h4>
           <div onClick={() => inputFileRef.current?.click()} className={styles.avatar}>
-          <img src={avatarUrl ? `http://45.67.58.211:4444/${avatarUrl}` : userAvatarImg} alt="" />
+          <img src={avatarUrl ? `https://pedronin.ru/${avatarUrl}` : userAvatarImg} alt="" />
             <div className={styles.avatar_camera}>
               <img src={cameraImg} alt="" />
             </div>

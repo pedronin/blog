@@ -55,7 +55,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
               className={styles.avatar}
               src={
                 obj.user.avatarUrl
-                  ? `http://45.67.58.211:4444/${obj.user.avatarUrl}`
+                  ? `https://pedronin.ru/${obj.user.avatarUrl}`
                   : noAvatar
               }
               alt="f"
@@ -73,7 +73,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
             className={styles.avatar}
             src={
               currUser?.avatarUrl
-                ? `http://45.67.58.211:4444/${currUser?.avatarUrl}`
+                ? `https://pedronin.ru/${currUser?.avatarUrl}`
                 : noAvatar
             }
             alt=""
