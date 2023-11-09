@@ -1,31 +1,31 @@
-import React from 'react';
-
+import React, { forwardRef } from 'react';
 import styles from './Button.module.scss';
-
-export enum EColor {
+export enum EButtonColor {
   BLUE = 'blue',
   RED = 'red',
   BORDER_BLUE = 'border__blue',
 }
 
-interface IButton {
-  color: EColor;
+interface IButtonProps  {
+  color: EButtonColor;
   children: string;
+  onClick?: () => void
 }
 
-const Button: React.FC<IButton> = ({ color, children }) => {
+const Button = forwardRef<HTMLButtonElement, IButtonProps>(({ color, children, ...props }) => {
   return (
     <button
+      {...props}
       className={`${styles.button} ${
-        color === EColor.BLUE
+        color === EButtonColor.BLUE
           ? styles.blue
-          : color === EColor.RED
+          : color === EButtonColor.RED
           ? styles.red
           : styles.border__blue
       }`}>
       {children}
     </button>
   );
-};
+});
 
 export default Button;

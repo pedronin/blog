@@ -1,4 +1,6 @@
 import React from 'react';
+import Button, { EButtonColor } from '../components/Button';
+import { Link } from 'react-router-dom';
 
 const NotFound: React.FC = () => {
   return (
@@ -8,6 +10,9 @@ const NotFound: React.FC = () => {
         <br />
         Ничего не найдено
       </h1>
+      <Link to={"/"}>
+        <Button color={EButtonColor.BLUE} >На главную</Button>
+      </Link>
     </div>
   );
 };

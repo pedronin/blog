@@ -1,8 +1,8 @@
 export interface IInitialStateSlice {
-  user: IUser,
-  searchTag: string,
-  sortTo: 'new' | 'popular',
-  firstLaunch: boolean
+  user: IUser;
+  searchTag: string;
+  sortTo: "new" | "popular";
+  firstLaunch: boolean;
 }
 
 export interface IUser {
@@ -14,7 +14,7 @@ export interface IUser {
   __v: 0;
   _id: string;
   avatarUrl?: string;
-  token: string
+  token: string;
 }
 
 export type TypeTags = string[];
@@ -34,18 +34,53 @@ export interface IPost {
   comments: IComment[];
 }
 
-export interface IInfoPost {
-  imageUrl?: string;
-  text: string;
-  title: string;
-  tags: TypeTags;
-}
+export type IInfoPost = Pick<IPost, "imageUrl" | "text" | "title"> & {
+  tags: String;
+};
 
-export interface IInfoUser {
+export interface NewUserMutate {
   fullName: string;
   email: string;
   password: string;
   avatarUrl?: string;
+}
+
+export interface LoginUserMutate {
+  email: string;
+  password: string;
+}
+
+export interface GetAllPostParams {
+  tag: string;
+  sortTo: string;
+}
+
+export interface UploadImageResponse {
+  url: string;
+}
+
+export interface AddNewPostMutate {
+  token: string;
+  infoPost: IInfoPost;
+}
+
+export interface RemovePostMutate {
+  token: string;
+  _id: string;
+}
+
+export interface UpdatePostMutate {
+  token: string;
+  _id: string;
+  infoPost: IInfoPost;
+}
+
+export interface CreateCommentMutate {
+  infoComment: {
+    postId: string;
+    text: string;
+  };
+  token: string;
 }
 
 export interface IComment {

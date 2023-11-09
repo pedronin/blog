@@ -1,16 +1,13 @@
 import React from 'react';
-
-import { blogApi } from '../redux/api';
+import { blogApi, setFirstLaunch, setSortTo } from '../redux';
+import { useAppDispatch, useAppSelector } from '../Hook/redux';
 import PostBlock from '../components/PostBlock';
 import TagsBlock from '../components/TagsBlok';
 import Loader from '../components/Loader';
-import { useAppDispatch, useAppSelector } from '../Hook/redux';
-import { setFirstLaunch, setSortTo } from '../redux/slice';
 
 const Home = () => {
   const dispatch = useAppDispatch();
   const [activeTab, setActiveTab] = React.useState('new');
-
   const { searchTag, sortTo } = useAppSelector((state) => state.slice);
 
   const {
@@ -55,9 +52,9 @@ const Home = () => {
       </div>
 
       <div className="flex">
-        {error ? <h1>Произошла ошибка при загрузке. Проверьту подключение</h1> : ''}
-        {!postItems?.length && !error ? <h1>Пока нет не одной написанной статьи.</h1> : ''}
-        {postItems ? (
+        {error && <h1>Произошла ошибка при загрузке. Проверьту подключение</h1>}
+        {!postItems?.length && !error && <h1>Пока нет не одной написанной статьи.</h1>}
+        {postItems && (
           <div className="posts">
             {isFetching ? (
               <Loader widthContent={true} backW={true} />
@@ -65,8 +62,6 @@ const Home = () => {
               postItems.map((post) => <PostBlock {...post} key={post._id} />)
             )}
           </div>
-        ) : (
-          ''
         )}
         <TagsBlock tags={tagsItems || []} />
       </div>

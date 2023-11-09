@@ -1,106 +1,118 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { IComment, IPost, TypeTags, IInfoPost, IInfoComment, IInfoUser } from './types';
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  IComment,
+  RemovePostMutate,
+  CreateCommentMutate,
+  UpdatePostMutate,
+  IPost,
+  TypeTags,
+  IInfoPost,
+  IInfoComment,
+  UploadImageResponse,
+  AddNewPostMutate,
+  NewUserMutate,
+  LoginUserMutate,
+  GetAllPostParams,
+} from "./types";
+import { SERVER_URL } from "../env";
 
 export const blogApi = createApi({
-  reducerPath: 'blogApi',
-  // baseQuery: fetchBaseQuery({ baseUrl: 'https://pedronin.ru/' }),
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://blog-ys3l.onrender.com/' }),
-  tagTypes: ['Posts', 'Post', 'Comment'],
+  reducerPath: "blogApi",
+  baseQuery: fetchBaseQuery({ baseUrl: SERVER_URL }),
+  tagTypes: ["Posts", "Post", "Comment"],
   endpoints: (builder) => ({
-    getMe: builder.query<TypeTags, IInfoUser>({
+    getMe: builder.query<TypeTags, NewUserMutate>({
       query: () => ({
-        url: '/auth/me',
+        url: "/auth/me",
       }),
     }),
-    newUser: builder.mutation<TypeTags, IInfoUser>({
+    newUser: builder.mutation<TypeTags, NewUserMutate>({
       query: (infoUser) => ({
-        url: '/auth/register',
-        method: 'POST',
+        url: "/auth/register",
+        method: "POST",
         body: infoUser,
       }),
     }),
-    loginUser: builder.mutation<TypeTags, { email: string; password: string }>({
+    loginUser: builder.mutation<TypeTags, LoginUserMutate>({
       query: (infoUser) => ({
-        url: '/auth/login',
-        method: 'POST',
+        url: "/auth/login",
+        method: "POST",
         body: infoUser,
       }),
     }),
 
     getAllTags: builder.query<TypeTags, string>({
       query: () => ({
-        url: '/posts/tags',
+        url: "/posts/tags",
       }),
     }),
-    getAllPost: builder.query<IPost[], { tag: string; sortTo: string }>({
-      query: ({ tag, sortTo }) => `/posts?sortTo=${sortTo}${tag ? `&tag=${tag}` : ''}`,
-      providesTags: ['Posts'],
+    getAllPost: builder.query<IPost[], GetAllPostParams>({
+      query: ({ tag, sortTo }) =>
+        `/posts?sortTo=${sortTo}${tag ? `&tag=${tag}` : ""}`,
+      providesTags: ["Posts"],
     }),
     getOnePost: builder.query<IPost, string>({
       query: (postId) => `/posts/${postId}`,
-      providesTags: ['Post'],
+      providesTags: ["Post"],
     }),
-    uploadImage: builder.mutation<{ url: string }, FormData>({
+    uploadImage: builder.mutation<UploadImageResponse, FormData>({
       query: (formData) => ({
         url: `/upload`,
-        method: 'POST',
+        method: "POST",
         body: formData,
       }),
     }),
-    addNewPost: builder.mutation<IPost, { token: string; infoPost: IInfoPost }>({
+    addNewPost: builder.mutation<IPost, AddNewPostMutate>({
       query: ({ token, infoPost }) => ({
         headers: new Headers({
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
         }),
-        url: '/posts',
-        method: 'POST',
+        url: "/posts",
+        method: "POST",
         body: infoPost,
       }),
-      invalidatesTags: ['Posts'],
+      invalidatesTags: ["Posts"],
     }),
-    removePost: builder.mutation<unknown, { _id: string; token: string }>({
+    removePost: builder.mutation<unknown, RemovePostMutate>({
       query: ({ _id, token }) => ({
         url: `/posts/${_id}`,
-        method: 'DELETE',
+        method: "DELETE",
         headers: new Headers({
-          Authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
+          Authorization: "Bearer " + token,
+          "Content-Type": "application/json",
         }),
       }),
-      invalidatesTags: ['Posts'],
+      invalidatesTags: ["Posts"],
     }),
-    updatePost: builder.mutation<IPost, { _id: string; token: string; infoPost: IInfoPost }>({
+    updatePost: builder.mutation<IPost, UpdatePostMutate>({
       query: ({ _id, token, infoPost }) => ({
         url: `/posts/${_id}`,
-        method: 'PATCH',
+        method: "PATCH",
         body: infoPost,
         headers: new Headers({
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         }),
       }),
-      invalidatesTags: ['Posts'],
+      invalidatesTags: ["Posts"],
     }),
 
-    createComment: builder.mutation<
-      IInfoComment,
-      { infoComment: { postId: string; text: string }; token: string }
-    >({
+    createComment: builder.mutation<IInfoComment, CreateCommentMutate>({
       query: ({ infoComment, token }) => ({
         url: `/comments`,
-        method: 'POST',
+        method: "POST",
         body: infoComment,
         headers: new Headers({
-          Authorization: 'Bearer ' + token,
+          Authorization: "Bearer " + token,
         }),
       }),
-      invalidatesTags: ['Comment'],
+      invalidatesTags: ["Comment"],
     }),
     getComments: builder.query<IComment[], string>({
       query: (postId) => ({
         url: `/comments/${postId}`,
       }),
-      providesTags: ['Comment'],
+      providesTags: ["Comment"],
     }),
   }),
 });

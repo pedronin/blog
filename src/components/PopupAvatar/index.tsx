@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
+import styles from "./PopupAvatar.module.scss";
+import Button, { EButtonColor } from "../Button";
+import { SERVER_URL } from "../../env";
 
-import styles from './PopupAvatar.module.scss';
-import Button, { EColor } from '../Button';
-
-interface IPopupAvatar {
+interface IPopupAvatarProps {
   onChangeAvatarUrl: (url: string) => void;
 }
 
 // компонента с готовыми аватарками
-const PopupAvatar: React.FC<IPopupAvatar> = ({ onChangeAvatarUrl }) => {
+const PopupAvatar: React.FC<IPopupAvatarProps> = ({ onChangeAvatarUrl }) => {
   const [hidden, setHidden] = React.useState(true);
 
   const onClickAvatar = (i: number): void => {
@@ -18,16 +18,21 @@ const PopupAvatar: React.FC<IPopupAvatar> = ({ onChangeAvatarUrl }) => {
 
   return (
     <div className={styles.root}>
-      <div onClick={() => setHidden(false)} className={styles.button}>
-        <Button color={EColor.BORDER_BLUE}>Выбрать из списка</Button>
+      <div className={styles.button}>
+        <Button
+          onClick={() => setHidden(false)}
+          color={EButtonColor.BORDER_BLUE}
+        >
+          Выбрать из списка
+        </Button>
       </div>
-      <div className={`${styles.popup} ${hidden ? styles.hidden : ''}`}>
+      <div className={`${styles.popup} ${hidden && styles.hidden}`}>
         <ul className={styles.popup__list}>
           {[...new Array(8)].map((_, i) => (
             <li className={styles.popup__item} key={i}>
               <img
                 onClick={() => onClickAvatar(i)}
-                src={`https://pedronin.ru/uploads/hero${i + 1}`}
+                src={`${SERVER_URL}uploads/hero${i + 1}`}
                 alt="i"
               />
             </li>

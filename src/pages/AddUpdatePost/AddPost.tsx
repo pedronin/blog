@@ -1,129 +1,142 @@
-import React from 'react';
-import axios from 'axios';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import SimpleMDE from 'react-simplemde-editor';
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import SimpleMDE from "react-simplemde-editor";
 
-import styles from './AddUpdatePost.module.scss';
+import styles from "./AddUpdatePost.module.scss";
 
-import 'easymde/dist/easymde.min.css';
-import { blogApi } from '../../redux/api';
-import { useAppSelector } from '../../Hook/redux';
-import Button, { EColor } from '../../components/Button';
-import { isValidField } from '../../utils/isValidField';
+import "easymde/dist/easymde.min.css";
+import { IInfoPost, blogApi } from "../../redux";
+import { useAppSelector } from "../../Hook/redux";
+import Button, { EButtonColor } from "../../components/Button";
+import { SERVER_URL } from "../../env";
 
 const AddPost = () => {
   const { token } = useAppSelector((state) => state.slice.user);
   const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<IInfoPost>({
+    defaultValues: {
+      imageUrl: "",
+      text: "",
+      title: "",
+      tags: [],
+    },
+    reValidateMode: "onBlur",
+  });
 
-  const [valTitle, setValTitle] = React.useState('');
-  const [valTags, setValTags] = React.useState('');
-  const [valText, setValText] = React.useState('');
-  const [imageUrl, setImageUrl] = React.useState('');
+  const [valText, setValText] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
   const inputFileRef = React.useRef<HTMLInputElement>(null);
-  const [invalidField, setInvalidField] = React.useState<string[]>();
 
   const [uploadImage] = blogApi.useUploadImageMutation();
   const [addNewPost] = blogApi.useAddNewPostMutation();
 
-  const handleChangeFile = async (e: React.FormEvent<HTMLInputElement>): Promise<void> => {
+  const handleChangeFile = async (
+    e: React.FormEvent<HTMLInputElement>
+  ): Promise<void> => {
     try {
       const formData = new FormData();
       if (e.currentTarget.files) {
-        formData.append('image', e.currentTarget.files[0]);
+        formData.append("image", e.currentTarget.files[0]);
       }
       const data = await uploadImage(formData).unwrap();
+      setValue("imageUrl", data.url);
       setImageUrl(data.url);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const onClickCreatePost = async (): Promise<void> => {
-    const infoPost = {
-      title: valTitle,
-      text: valText,
-      tags: valTags.split(' '),
-      imageUrl: imageUrl,
-    };
-
+  const onSubmit = async (data: IInfoPost): Promise<void> => {
+    console.log(data);
     try {
-      const data = await addNewPost({ token, infoPost }).unwrap();
-      navigate('/');
+      const newData = await addNewPost({
+        token,
+        infoPost: { ...data, text: valText },
+      }).unwrap();
+      navigate("/");
     } catch (error) {
-      setInvalidField([]);
-      setInvalidField(isValidField(error));
+      console.log(error);
     }
   };
 
   const options = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: '400px',
+      maxHeight: "400px",
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: "Введите текст...",
       status: false,
       autosave: {
         enabled: true,
         delay: 1000,
-        uniqueId: 'editor',
+        uniqueId: "editor",
       },
     }),
-    [],
+    []
   );
 
-  const onClickRemoveImage = (): void => setImageUrl('');
+  const onClickRemoveImage = (): void => {
+    setImageUrl("");
+    setValue("imageUrl", "");
+  };
 
-  const onChangeValText = React.useCallback((value: string): void => setValText(value), []);
-
-  const onChangeTags = (e: React.ChangeEvent<HTMLInputElement>): void => setValTags(e.target.value);
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    setValTitle(e.target.value);
+  const onChangeValText = React.useCallback(
+    (value: string): void => setValText(value),
+    []
+  );
 
   return (
     <div className="container">
       <div className={styles.root}>
         <div className={styles.wrapper}>
-          <input ref={inputFileRef} onChange={handleChangeFile} type="file" hidden />
-          <div onClick={() => inputFileRef.current?.click()} className={styles.widthContent}>
-            <Button color={EColor.BORDER_BLUE}>Загрузить превью</Button>
-          </div>
-
-          {imageUrl && (
-            <div onClick={onClickRemoveImage}>
-              <Button color={EColor.BLUE}>Удалить</Button>
-            </div>
-          )}
-          {imageUrl && (
-            <img
-              className={styles.preview}
-              src={`https://pedronin.ru/${imageUrl}`}></img>
-          )}
-
-          {invalidField?.includes('title') ? (
-            <span className={styles.invalid_field}>Минимум 3 символа</span>
-          ) : (
-            ''
-          )}
-
           <input
-            onChange={onChangeTitle}
-            value={valTitle}
+            ref={inputFileRef}
+            onChange={handleChangeFile}
+            type="file"
+            hidden
+          />
+          <Button
+            onClick={() => inputFileRef.current?.click()}
+            color={EButtonColor.BORDER_BLUE}
+          >
+            Загрузить превью
+          </Button>
+
+          {imageUrl && (
+            <>
+              <Button onClick={onClickRemoveImage} color={EButtonColor.BLUE}>
+                Удалить
+              </Button>
+              <img
+                className={styles.preview}
+                src={`${SERVER_URL}${imageUrl}`}
+              />
+            </>
+          )}
+
+          {errors.title && (
+            <span className={styles.invalid_field}>
+              {errors.title?.message}
+            </span>
+          )}
+          <input
+            {...register("title", {
+              required: "Это обязательно поле",
+            })}
             className={styles.input__title}
             type="text"
             placeholder="Заголовок статьи..."
           />
           <div className={styles.input__tags}>
-            <input onChange={onChangeTags} value={valTags} type="text" placeholder="Тэги" />
+            <input {...register("tags")} type="text" placeholder="Тэги" />
           </div>
         </div>
-
-        {invalidField?.includes('text') ? (
-          <span className={`${styles.invalid_field} ${styles.padding_left}`}>
-            Минимум 10 символа
-          </span>
-        ) : (
-          ''
-        )}
 
         <SimpleMDE
           className={styles.editor}
@@ -132,11 +145,9 @@ const AddPost = () => {
           value={valText}
           options={options}
         />
-        <div onClick={onClickCreatePost} className={styles.inline}>
-          <Button color={EColor.BLUE}>Опубликовать</Button>
-        </div>
+        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>Опубликовать</Button>
         <Link to="/">
-          <Button color={EColor.BORDER_BLUE}>Отмена</Button>
+          <Button color={EButtonColor.BORDER_BLUE}>Отмена</Button>
         </Link>
       </div>
     </div>

@@ -1,52 +1,49 @@
-import React from 'react';
+import React from "react";
+import { useForm } from "react-hook-form";
 
-import styles from '../components/Form.module.scss';
-import { blogApi } from '../redux/api';
-import { setUser } from '../redux/slice';
-import { useAppDispatch, useAppSelector } from '../Hook/redux';
-import { useNavigate } from 'react-router-dom';
+import styles from "../components/Form.module.scss";
+import { NewUserMutate, blogApi, setUser } from "../redux";
+import { useAppDispatch, useAppSelector } from "../Hook/redux";
+import { useNavigate } from "react-router-dom";
 
-import userAvatarImg from '../assets/img/user-avatar.png';
-import cameraImg from '../assets/img/camera.svg';
-import PopupAvatar from '../components/PopupAvatar';
-import { isValidField } from '../utils/isValidField';
+import userAvatarImg from "../assets/img/user-avatar.png";
+import cameraImg from "../assets/img/camera.svg";
+import PopupAvatar from "../components/PopupAvatar";
+import { SERVER_URL } from "../env";
+import { InputFormUser } from "../components/InputFormUser";
 
 const Registration: React.FC = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const [avatarUrl, setAvatarUrl] = React.useState('');
-  const [fullName, setFullName] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [invalidField, setInvalidField] = React.useState<string[]>();
-
+  const [avatarUrl, setAvatarUrl] = React.useState("");
   const inputFileRef = React.useRef<HTMLInputElement>(null);
-
   const user = useAppSelector((state) => state.slice.user);
   const [newUser] = blogApi.useNewUserMutation();
   const [uploadImage] = blogApi.useUploadImageMutation();
 
-  const onClickCreateUser = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const obj = {
-      fullName,
-      email,
-      password,
-      avatarUrl,
-    };
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+  } = useForm<NewUserMutate>({
+    defaultValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      avatarUrl: "",
+    },
+    reValidateMode: "onChange",
+  });
 
+  const onSubmit = async (data: NewUserMutate) => {
+    console.log(data);
     try {
-      setInvalidField([])
-      const data = await newUser(obj).unwrap();
-      setFullName('');
-      setEmail('');
-      setPassword('');
-      setAvatarUrl('');
-      dispatch(setUser(data));
-      navigate('/');
+      const newData = await newUser(data).unwrap();
+      dispatch(setUser(newData));
+      navigate("/");
     } catch (err) {
-      setInvalidField([])
-      setInvalidField(isValidField(err));
+      console.log(err);
     }
   };
 
@@ -55,90 +52,66 @@ const Registration: React.FC = () => {
     try {
       const formData = new FormData();
       if (e.currentTarget.files) {
-        formData.append('image', e.currentTarget.files[0]);
+        formData.append("image", e.currentTarget.files[0]);
       }
       const data = await uploadImage(formData).unwrap();
-      console.log(data.url);
       setAvatarUrl(data.url);
+      setValue("avatarUrl", data.url);
     } catch (err) {
-      alert('Ошибка при загрузке аватарки');
+      alert("Ошибка при загрузке аватарки");
       console.error(err);
     }
   };
 
   const onChangeAvatarUrl = (url: string): void => {
     setAvatarUrl(url);
+    setValue("avatarUrl", url);
   };
 
   React.useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
-
-  const onChangeMail = (e: React.ChangeEvent<HTMLInputElement>): void => setEmail(e.target.value);
-  const onChangePass = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    setPassword(e.target.value);
-  const onChangeName = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    setFullName(e.target.value);
 
   return (
     <div className="container">
       <div className={styles.root}>
-        <form action="">
+        <form onSubmit={handleSubmit(onSubmit)} action="">
           <h4 className={styles.title}>Создание аккаунта</h4>
-          <div onClick={() => inputFileRef.current?.click()} className={styles.avatar}>
-          <img src={avatarUrl ? `https://pedronin.ru/${avatarUrl}` : userAvatarImg} alt="" />
+          <div
+            onClick={() => inputFileRef.current?.click()}
+            className={styles.avatar}
+          >
+            <img
+              src={avatarUrl ? `${SERVER_URL}${avatarUrl}` : userAvatarImg}
+              alt=""
+            />
             <div className={styles.avatar_camera}>
               <img src={cameraImg} alt="" />
             </div>
           </div>
           <PopupAvatar onChangeAvatarUrl={onChangeAvatarUrl} />
-          <input ref={inputFileRef} onChange={handleChangeFile} type="file" hidden />
-
-          {invalidField?.includes('fullName') ? (
-            <span className={styles.invalid_field}>Минимум 3 символа</span>
-          ) : (
-            ''
-          )}
-
-          <div className={styles.form__row}>
-            <input
-              onChange={onChangeName}
-              value={fullName}
-              className={styles.form__input}
-              required
-            />
-            <label className={styles.form__label}>Полное имя</label>
-          </div>
-
-          {invalidField?.includes('email') ? (
-            <span className={styles.invalid_field}>Не валидный email</span>
-          ) : (
-            ''
-          )}
-
-          <div className={styles.form__row}>
-            <input onChange={onChangeMail} value={email} className={styles.form__input} required />
-            <label className={styles.form__label}>E-Mail</label>
-          </div>
-
-          {invalidField?.includes('password') ? (
-            <span className={styles.invalid_field}>Минимум 5 символа</span>
-          ) : (
-            ''
-          )}
-
-          <div className={styles.form__row}>
-            <input
-              onChange={onChangePass}
-              value={password}
-              className={styles.form__input}
-              required
-            />
-            <label className={styles.form__label}>Пароль</label>
-          </div>
-          <button onClick={onClickCreateUser} className={styles.form__submit}>
-            Зарегистрироваться
-          </button>
+          <input
+            ref={inputFileRef}
+            onChange={handleChangeFile}
+            type="file"
+            hidden
+          />
+          <InputFormUser
+            errorMessage={errors.fullName?.message}
+            register={register}
+            nameInput={"fullName"}
+          />
+          <InputFormUser
+            errorMessage={errors.email?.message}
+            register={register}
+            nameInput={"email"}
+          />
+          <InputFormUser
+            errorMessage={errors.password?.message}
+            register={register}
+            nameInput={"password"}
+          />
+          <button className={styles.form__submit}>Зарегистрироваться</button>
         </form>
       </div>
     </div>

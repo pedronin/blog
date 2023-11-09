@@ -1,70 +1,85 @@
-import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import SimpleMDE from 'react-simplemde-editor';
+import React from "react";
+import { useForm } from "react-hook-form";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import SimpleMDE from "react-simplemde-editor";
 
-import styles from './AddUpdatePost.module.scss';
+import styles from "./AddUpdatePost.module.scss";
 
-import 'easymde/dist/easymde.min.css';
-import { blogApi } from '../../redux/api';
-import { useAppSelector } from '../../Hook/redux';
-import Button, { EColor } from '../../components/Button';
-import { isValidField } from '../../utils/isValidField';
+import "easymde/dist/easymde.min.css";
+import { IInfoPost, blogApi } from "../../redux";
+import { useAppSelector } from "../../Hook/redux";
+import Button, { EButtonColor } from "../../components/Button";
+import { SERVER_URL } from "../../env";
 
 const AddPost = () => {
-  const { token } = useAppSelector((state) => state.slice.user);
   const navigate = useNavigate();
+  const { token } = useAppSelector((state) => state.slice.user);
   const { id } = useParams();
 
-  const [valTitle, setValTitle] = React.useState('');
-  const [valTags, setValTags] = React.useState('');
-  const [valText, setValText] = React.useState('');
-  const [imageUrl, setImageUrl] = React.useState('');
+  const [valText, setValText] = React.useState("");
+  const [imageUrl, setImageUrl] = React.useState("");
   const inputFileRef = React.useRef<HTMLInputElement>(null);
-  const [invalidField, setInvalidField] = React.useState<string[]>();
 
   const [uploadImage] = blogApi.useUploadImageMutation();
   const [updatePost] = blogApi.useUpdatePostMutation();
 
-  const { data } = blogApi.useGetOnePostQuery(id || '');
+  const { data } = blogApi.useGetOnePostQuery(id || "");
+
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<IInfoPost>({
+    defaultValues: {
+      imageUrl: "",
+      text: "",
+      title: "",
+      tags: "",
+    },
+    reValidateMode: "onBlur",
+  });
 
   React.useEffect(() => {
     if (data) {
-      setValTitle(data.title);
-      setValTags(data.tags.join(' '));
       setValText(data.text);
-      setImageUrl(data.imageUrl || '');
+      setImageUrl(data.imageUrl || "");
+      setValue("title", data.title);
+      // Ошибка
+      setValue("tags", data.tags.join(" "));
     }
   }, [data]);
 
-  const onClickUpdatePost = async (): Promise<void> => {
+  const onSubmit = async (data: IInfoPost): Promise<void> => {
     if (!id) {
       return;
     }
 
-    const infoPost = {
-      title: valTitle,
-      text: valText,
-      tags: valTags.split(' '),
-      imageUrl: imageUrl,
-    };
-
     try {
-      const data = await updatePost({ _id: id, token, infoPost }).unwrap();
-      navigate('/');
+      const newData = await updatePost({
+        _id: id,
+        token,
+        infoPost: { ...data, text: valText },
+      }).unwrap();
+      reset();
+      navigate("/");
     } catch (error) {
-      setInvalidField([]);
-      setInvalidField(isValidField(error));
+      console.log(error);
     }
   };
 
-  const handleChangeFile = async (e: React.FormEvent<HTMLInputElement>): Promise<void> => {
+  const handleChangeFile = async (
+    e: React.FormEvent<HTMLInputElement>
+  ): Promise<void> => {
     e.preventDefault();
     try {
       const formData = new FormData();
       if (e.currentTarget.files) {
-        formData.append('image', e.currentTarget.files[0]);
+        formData.append("image", e.currentTarget.files[0]);
       }
       const data = await uploadImage(formData).unwrap();
+      setValue("imageUrl", data.url);
       setImageUrl(data.url);
     } catch (error) {
       console.log(error);
@@ -74,69 +89,70 @@ const AddPost = () => {
   const options = React.useMemo(
     () => ({
       spellChecker: false,
-      maxHeight: '400px',
+      maxHeight: "400px",
       autofocus: true,
-      placeholder: 'Введите текст...',
+      placeholder: "Введите текст...",
       status: false,
       autosave: {
         enabled: true,
         delay: 1000,
-        uniqueId: 'editor',
+        uniqueId: "editor",
       },
     }),
-    [],
+    []
   );
 
-  const onChangeValText = React.useCallback((value: string): void => setValText(value), []);
+  const onChangeValText = React.useCallback(
+    (value: string) => setValText(value),
+    []
+  );
 
-  const onClickRemoveImage = (): void => setImageUrl('');
-
-  const onChangeTags = (e: React.ChangeEvent<HTMLInputElement>): void => setValTags(e.target.value);
-  const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>): void =>
-    setValTitle(e.target.value);
+  const onClickRemoveImage = () => {
+    setImageUrl("");
+    setValue("imageUrl", "");
+  };
 
   return (
     <div className="container">
       <div className={styles.root}>
         <div className={styles.wrapper}>
-          <input ref={inputFileRef} onChange={handleChangeFile} type="file" hidden />
+          <input
+            ref={inputFileRef}
+            onChange={handleChangeFile}
+            type="file"
+            hidden
+          />
 
-          <div onClick={() => inputFileRef.current?.click()} className={styles.widthContent}>
-            <Button color={EColor.BORDER_BLUE}>Загрузить превью</Button>
-          </div>
+          <Button onClick={() => inputFileRef.current?.click()} color={EButtonColor.BORDER_BLUE}>Загрузить превью</Button>
 
           {imageUrl && (
-            <div onClick={onClickRemoveImage}>
-              <Button color={EColor.BLUE}>Удалить</Button>
-            </div>
+            <Button onClick={onClickRemoveImage} color={EButtonColor.BLUE}>Удалить</Button>
           )}
           {imageUrl && (
-            <img className={styles.preview} src={`https://pedronin.ru/${imageUrl}`}></img>
+            <img
+              className={styles.preview}
+              src={`${SERVER_URL}${imageUrl}`}
+            ></img>
           )}
-          {invalidField?.includes('title') ? (
+          {errors.title && (
             <span className={styles.invalid_field}>
-              Минимум 3 символа
+              {errors.title?.message}
             </span>
-          ) : (
-            ''
           )}
           <input
-            onChange={onChangeTitle}
-            value={valTitle}
+            {...register("title", {
+              required: "Это поле обязательно",
+            })}
             className={styles.input__title}
             type="text"
             placeholder="Заголовок статьи..."
           />
           <div className={styles.input__tags}>
-            <input onChange={onChangeTags} value={valTags} type="text" placeholder="Тэги" />
+            <input {...register("tags")} type="text" placeholder="Тэги" />
           </div>
         </div>
-        {invalidField?.includes('text') ? (
-          <span className={`${styles.invalid_field} ${styles.padding_left}`}>
-            Минимум 10 символа
-          </span>
-        ) : (
-          ''
+        {errors.text && (
+          <span className={styles.invalid_field}>{errors.text?.message}</span>
         )}
         <SimpleMDE
           className={styles.editor}
@@ -145,11 +161,9 @@ const AddPost = () => {
           value={valText}
           options={options}
         />
-        <div onClick={onClickUpdatePost} className={styles.inline}>
-          <Button color={EColor.BLUE}>Сохранить</Button>
-        </div>
+        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>Сохранить</Button>
         <Link to="/">
-          <Button color={EColor.BORDER_BLUE}>Отмена</Button>
+          <Button color={EButtonColor.BORDER_BLUE}>Отмена</Button>
         </Link>
       </div>
     </div>

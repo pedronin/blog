@@ -1,17 +1,17 @@
-import React from 'react';
-import { blogApi } from '../../redux/api';
-import { useNavigate, useParams } from 'react-router-dom';
-import UserInfo from '../../components/UserInfo';
+import { useNavigate, useParams } from "react-router-dom";
+import UserInfo from "../../components/UserInfo";
 
-import styles from './FullPost.module.scss';
-import { useAppDispatch } from '../../Hook/redux';
-import CommentsBlok from '../../components/CommentsBlok';
-import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
-import { setSearchTag } from '../../redux/slice';
+import styles from "./FullPost.module.scss";
+import { useAppDispatch } from "../../Hook/redux";
+import CommentsBlok from "../../components/CommentsBlok";
+import { ReactMarkdown } from "react-markdown/lib/react-markdown";
+import { setSearchTag, blogApi } from "../../redux";
 
-import eyeIcon from '../../assets/img/eye.svg';
-import commentIcon from '../../assets/img/comment.svg';
-import Loader from '../../components/Loader';
+import eyeIcon from "../../assets/img/eye.svg";
+import commentIcon from "../../assets/img/comment.svg";
+import Loader from "../../components/Loader";
+import { SERVER_URL } from "../../env";
+import NotFound from "../NotFound";
 
 const FullPost = () => {
   const navigate = useNavigate();
@@ -20,31 +20,32 @@ const FullPost = () => {
 
   const onClickSetSearchTeg = (tag: string): void => {
     dispatch(setSearchTag(tag));
-    navigate('/');
+    navigate("/");
   };
 
   if (!postId) {
     return <Loader />;
   }
 
-  const { data } = blogApi.useGetOnePostQuery(postId, { refetchOnMountOrArgChange: true });
+  const { data } = blogApi.useGetOnePostQuery(postId, {refetchOnMountOrArgChange: true,});
   const { data: comments } = blogApi.useGetCommentsQuery(postId);
 
   if (!data) {
-    return <Loader />;
+    return <NotFound />;
   }
 
-  const { imageUrl, title, text, createdAt, updatedAt, user, viewsCount, commentsCount, tags } =
-    data;
+  const { imageUrl, title, text, updatedAt, user, viewsCount, tags } = data;
 
   return (
     <div className="container">
       <div className={styles.content}>
-        <img
-          className={styles.content__preview}
-          src={imageUrl ? `https://pedronin.ru/${imageUrl}` : ''}
-          alt=""
-        />
+        {imageUrl && (
+          <img
+            className={styles.content__preview}
+            src={`${SERVER_URL}${imageUrl}`}
+            alt=""
+          />
+        )}
         <div className={styles.content__wrapper}>
           <UserInfo {...user} updatedAt={updatedAt} />
           <div className={styles.content__link}>
@@ -52,7 +53,7 @@ const FullPost = () => {
             <ul className={styles.content__tags}>
               {tags.map((tag) => (
                 <li onClick={() => onClickSetSearchTeg(tag)} key={tag}>
-                  {'#' + tag}
+                  {"#" + tag}
                 </li>
               ))}
             </ul>

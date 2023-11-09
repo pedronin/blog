@@ -1,17 +1,17 @@
 import React from 'react';
 import styles from './Loader.module.scss';
 
-interface ILoader {
+interface ILoaderProps {
   backW?: boolean;
   widthContent?: boolean;
 }
 
-const Loader: React.FC<ILoader> = ({ backW, widthContent }) => {
+const Loader: React.FC<ILoaderProps> = ({ backW, widthContent }) => {
   return (
     <>
       <div
-        className={`${styles.loader__container} ${backW ? styles.loader__container_white : ''} ${
-          widthContent ? styles.loader__container_width : ''
+        className={`${styles.loader__container} ${backW && styles.loader__container_white} ${
+          widthContent && styles.loader__container_width
         }`}>
         <div className={styles.spinner}></div>
       </div>

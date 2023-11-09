@@ -1,15 +1,14 @@
 import React from 'react';
 
 import styles from './TagsBlok.module.scss';
-import { TypeTags } from '../../redux/types';
+import { TypeTags, setSearchTag} from '../../redux';
 import { useAppDispatch } from '../../Hook/redux';
-import { setSearchTag } from '../../redux/slice';
 
-interface ITagsBlock {
+interface ITagsBlockProps {
   tags: TypeTags;
 }
 
-const TagsBlock: React.FC<ITagsBlock> = ({ tags }) => {
+const TagsBlock: React.FC<ITagsBlockProps> = ({ tags }) => {
   const dispatch = useAppDispatch();
 
   const onClickSetSearchTag = (tag: string) => {

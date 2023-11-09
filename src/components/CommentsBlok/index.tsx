@@ -1,19 +1,17 @@
 import React from 'react';
-
+import stylesForm from '../Form.module.scss';
+import styles from './CommentsBlok.module.scss';
+import { blogApi } from '../../redux';
+import { useAppSelector } from '../../Hook/redux';
+import Button, { EButtonColor } from '../Button';
+import { SERVER_URL } from '../../env';
 import noAvatar from '../../assets/img/user-avatar.png';
 
-import styles from './CommentsBlok.module.scss';
-import stylesForm from '../Form.module.scss';
-
-import { blogApi } from '../../redux/api';
-import { useAppSelector } from '../../Hook/redux';
-import Button, { EColor } from '../Button';
-
-interface ICommentsBlok {
+interface ICommentsBlokProps {
   postId: string;
 }
 
-const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
+const CommentsBlok: React.FC<ICommentsBlokProps> = ({ postId }) => {
   const currUser = useAppSelector((state) => state.slice.user);
   const [valueComment, setValueComment] = React.useState('');
   const [createComment] = blogApi.useCreateCommentMutation();
@@ -55,7 +53,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
               className={styles.avatar}
               src={
                 obj.user.avatarUrl
-                  ? `https://pedronin.ru/${obj.user.avatarUrl}`
+                  ? `${SERVER_URL}${obj.user.avatarUrl}`
                   : noAvatar
               }
               alt="f"
@@ -73,7 +71,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
             className={styles.avatar}
             src={
               currUser?.avatarUrl
-                ? `https://pedronin.ru/${currUser?.avatarUrl}`
+                ? `${SERVER_URL}${currUser?.avatarUrl}`
                 : noAvatar
             }
             alt=""
@@ -91,7 +89,7 @@ const CommentsBlok: React.FC<ICommentsBlok> = ({ postId }) => {
               </label>
             </div>
             <div onClick={onClickCreateComment} className={styles.widthContent}>
-              <Button color={EColor.BLUE}>Отправить</Button>
+              <Button color={EButtonColor.BLUE}>Отправить</Button>
             </div>
           </form>
         </div>

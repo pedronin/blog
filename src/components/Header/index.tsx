@@ -1,11 +1,9 @@
 import React from 'react';
-
 import { Link, useNavigate } from 'react-router-dom';
-
 import styles from './Header.module.scss';
 import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { setSearchTag, setUser } from '../../redux/slice';
-import Button, { EColor } from '../Button';
+import { setSearchTag, setUser } from '../../redux';
+import Button, { EButtonColor } from '../Button';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -38,19 +36,17 @@ const Header = () => {
           {user ? (
             <>
               <Link to="/create">
-                <Button color={EColor.BLUE}>Создать статью</Button>
+                <Button color={EButtonColor.BLUE}>Создать статью</Button>
               </Link>
-              <div onClick={onClickLogout}>
-                <Button color={EColor.RED}>Выйти</Button>
-              </div>
+              <Button onClick={onClickLogout} color={EButtonColor.RED}>Выйти</Button>
             </>
           ) : (
             <>
               <Link to="/login">
-                <Button color={EColor.BORDER_BLUE}>Войти</Button>
+                <Button color={EButtonColor.BORDER_BLUE}>Войти</Button>
               </Link>
               <Link to="/registration">
-                <Button color={EColor.BLUE}>Создать аккаунт</Button>
+                <Button color={EButtonColor.BLUE}>Создать аккаунт</Button>
               </Link>
             </>
           )}

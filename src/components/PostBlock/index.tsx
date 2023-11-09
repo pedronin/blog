@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { IPost } from '../../redux/types';
-
 import pencil from '../../assets/img/pecil.svg';
 import exit from '../../assets/img/exit.svg';
 import eyeIcon from '../../assets/img/eye.svg';
@@ -10,15 +8,14 @@ import commentIcon from '../../assets/img/comment.svg';
 
 import styles from './PostBlock.module.scss';
 import UserInfo from '../UserInfo';
-import { blogApi } from '../../redux/api';
+import { IPost, setSearchTag, blogApi} from '../../redux';
 import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { setSearchTag } from '../../redux/slice';
+import { SERVER_URL } from '../../env';
 
 const PostBlock: React.FC<IPost> = ({
   imageUrl,
   _id,
   title,
-  createdAt,
   updatedAt,
   user,
   viewsCount,
@@ -67,7 +64,7 @@ const PostBlock: React.FC<IPost> = ({
         </button>
       </div>
       {imageUrl && (
-        <img className={styles.image} src={`https://pedronin.ru/${imageUrl}`} alt="" />
+        <img className={styles.image} src={`${SERVER_URL}${imageUrl}`} alt="" />
       )}
       <div className={styles.wrapper}>
         <UserInfo {...user} updatedAt={updatedAt} />
