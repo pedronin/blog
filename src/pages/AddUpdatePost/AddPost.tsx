@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SimpleMDE from "react-simplemde-editor";
-
+import { useForm } from "react-hook-form";
 import styles from "./AddUpdatePost.module.scss";
-
 import "easymde/dist/easymde.min.css";
+import { SERVER_URL } from "../../env";
 import { IInfoPost, blogApi } from "../../redux";
 import { useAppSelector } from "../../Hook/redux";
 import Button, { EButtonColor } from "../../components/Button";
-import { SERVER_URL } from "../../env";
 
 const AddPost = () => {
   const { token } = useAppSelector((state) => state.slice.user);
@@ -35,22 +33,6 @@ const AddPost = () => {
 
   const [uploadImage] = blogApi.useUploadImageMutation();
   const [addNewPost] = blogApi.useAddNewPostMutation();
-
-  const handleChangeFile = async (
-    e: React.FormEvent<HTMLInputElement>
-  ): Promise<void> => {
-    try {
-      const formData = new FormData();
-      if (e.currentTarget.files) {
-        formData.append("image", e.currentTarget.files[0]);
-      }
-      const data = await uploadImage(formData).unwrap();
-      setValue("imageUrl", data.url);
-      setImageUrl(data.url);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const onSubmit = async (data: IInfoPost): Promise<void> => {
     console.log(data);
@@ -80,6 +62,22 @@ const AddPost = () => {
     }),
     []
   );
+
+  const handleChangeFile = async (
+    e: React.FormEvent<HTMLInputElement>
+  ): Promise<void> => {
+    try {
+      const formData = new FormData();
+      if (e.currentTarget.files) {
+        formData.append("image", e.currentTarget.files[0]);
+      }
+      const data = await uploadImage(formData).unwrap();
+      setValue("imageUrl", data.url);
+      setImageUrl(data.url);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const onClickRemoveImage = (): void => {
     setImageUrl("");
@@ -127,7 +125,7 @@ const AddPost = () => {
           )}
           <input
             {...register("title", {
-              required: "Это обязательно поле",
+              required: "Введите заголовок статьи - минимум 3 символа",
             })}
             className={styles.input__title}
             type="text"
@@ -145,7 +143,9 @@ const AddPost = () => {
           value={valText}
           options={options}
         />
-        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>Опубликовать</Button>
+        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>
+          Опубликовать
+        </Button>
         <Link to="/">
           <Button color={EButtonColor.BORDER_BLUE}>Отмена</Button>
         </Link>

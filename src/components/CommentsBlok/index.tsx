@@ -1,11 +1,11 @@
-import React from 'react';
-import stylesForm from '../Form.module.scss';
-import styles from './CommentsBlok.module.scss';
-import { blogApi } from '../../redux';
-import { useAppSelector } from '../../Hook/redux';
-import Button, { EButtonColor } from '../Button';
-import { SERVER_URL } from '../../env';
-import noAvatar from '../../assets/img/user-avatar.png';
+import React from "react";
+import stylesForm from "../Form.module.scss";
+import styles from "./CommentsBlok.module.scss";
+import { blogApi } from "../../redux";
+import { useAppSelector } from "../../Hook/redux";
+import Button, { EButtonColor } from "../Button";
+import { SERVER_URL } from "../../env";
+import noAvatar from "../../assets/img/user-avatar.png";
 
 interface ICommentsBlokProps {
   postId: string;
@@ -13,7 +13,7 @@ interface ICommentsBlokProps {
 
 const CommentsBlok: React.FC<ICommentsBlokProps> = ({ postId }) => {
   const currUser = useAppSelector((state) => state.slice.user);
-  const [valueComment, setValueComment] = React.useState('');
+  const [valueComment, setValueComment] = React.useState("");
   const [createComment] = blogApi.useCreateCommentMutation();
 
   const { data: comments } = blogApi.useGetCommentsQuery(postId);
@@ -21,7 +21,7 @@ const CommentsBlok: React.FC<ICommentsBlokProps> = ({ postId }) => {
   const onClickCreateComment = async (e: React.MouseEvent) => {
     e.preventDefault();
     if (currUser === null) {
-      return alert('Для начала авторизируйтесь');
+      return alert("Для начала авторизируйтесь");
     }
     if (!postId) {
       return;
@@ -32,7 +32,7 @@ const CommentsBlok: React.FC<ICommentsBlokProps> = ({ postId }) => {
         postId: postId,
         user: currUser._id,
       };
-      setValueComment('');
+      setValueComment("");
       await createComment({ infoComment, token: currUser?.token });
     } catch (error) {
       console.log(error);

@@ -32,6 +32,7 @@ const Login = () => {
       dispatch(setUser(newData));
       navigate("/");
     } catch (err: any) {
+      alert("Неверный логин или пороль")
       console.log(err);
     }
   };
@@ -45,12 +46,7 @@ const Login = () => {
       <div className={styles.root}>
         <form onSubmit={handleSubmit(onSubmit)} action="">
           <h4 className={styles.title}>Вход в аккаунт</h4>
-          {errors.email && (
-            <span className={styles.invalid_field}>
-              {errors.email?.message}
-            </span>
-          )}
-          
+
           <InputFormUser
             errorMessage={errors.email?.message}
             register={register}

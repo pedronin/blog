@@ -1,15 +1,15 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { IInitialStateSlice } from './types';
+import { createSlice } from "@reduxjs/toolkit";
+import { IInitialStateSlice } from "./types";
 
 const initialState: IInitialStateSlice = {
-  user: JSON.parse(localStorage.getItem('user') || '{}'),
-  searchTag: '',
-  sortTo: 'new',
+  user: JSON.parse(localStorage.getItem("user") || "{}"),
+  searchTag: "",
+  sortTo: "new",
   firstLaunch: true,
 };
 
 const slice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser(state, action) {
@@ -27,5 +27,6 @@ const slice = createSlice({
   },
 });
 
-export const { setUser, setSearchTag, setSortTo, setFirstLaunch } = slice.actions;
+export const { setUser, setSearchTag, setSortTo, setFirstLaunch } =
+  slice.actions;
 export default slice.reducer;

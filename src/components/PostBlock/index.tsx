@@ -1,16 +1,16 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
 
-import pencil from '../../assets/img/pecil.svg';
-import exit from '../../assets/img/exit.svg';
-import eyeIcon from '../../assets/img/eye.svg';
-import commentIcon from '../../assets/img/comment.svg';
+import pencil from "../../assets/img/pecil.svg";
+import exit from "../../assets/img/exit.svg";
+import eyeIcon from "../../assets/img/eye.svg";
+import commentIcon from "../../assets/img/comment.svg";
 
-import styles from './PostBlock.module.scss';
-import UserInfo from '../UserInfo';
-import { IPost, setSearchTag, blogApi} from '../../redux';
-import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { SERVER_URL } from '../../env';
+import styles from "./PostBlock.module.scss";
+import UserInfo from "../UserInfo";
+import { IPost, setSearchTag, blogApi } from "../../redux";
+import { useAppDispatch, useAppSelector } from "../../Hook/redux";
+import { SERVER_URL } from "../../env";
 
 const PostBlock: React.FC<IPost> = ({
   imageUrl,
@@ -37,7 +37,7 @@ const PostBlock: React.FC<IPost> = ({
         console.error(error);
       }
     } else {
-      alert('Доступно только для создателя поста!');
+      alert("Доступно только для создателя поста!");
     }
   };
 
@@ -45,7 +45,7 @@ const PostBlock: React.FC<IPost> = ({
     if (currentUser?._id === user._id) {
       navigate(`/update/${_id}`);
     } else {
-      alert('Доступно только для создателя поста!');
+      alert("Доступно только для создателя поста!");
     }
   };
 
@@ -76,7 +76,7 @@ const PostBlock: React.FC<IPost> = ({
           <ul className={styles.tags}>
             {tags.map((tag) => (
               <li onClick={() => onClickSetSearchTeg(tag)} key={tag}>
-                {'#' + tag}
+                {"#" + tag}
               </li>
             ))}
           </ul>

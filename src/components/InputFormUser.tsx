@@ -30,9 +30,10 @@ export const InputFormUser: React.FC<InputFormUserProps> = ({
           // @ts-ignore
           {...register(nameInput, {
             required: "Это обязательное поле",
+            minLength: 3
           })}
           className={styles.form__input}
-          required
+          // required
         />
         <label className={styles.form__label}>{placeholders[nameInput]}</label>
       </div>

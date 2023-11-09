@@ -1,17 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
-import UserInfo from "../../components/UserInfo";
-
 import styles from "./FullPost.module.scss";
 import { useAppDispatch } from "../../Hook/redux";
 import CommentsBlok from "../../components/CommentsBlok";
 import { ReactMarkdown } from "react-markdown/lib/react-markdown";
 import { setSearchTag, blogApi } from "../../redux";
-
+import { SERVER_URL } from "../../env";
+import Loader from "../../components/Loader";
+import UserInfo from "../../components/UserInfo";
+import NotFound from "../NotFound";
 import eyeIcon from "../../assets/img/eye.svg";
 import commentIcon from "../../assets/img/comment.svg";
-import Loader from "../../components/Loader";
-import { SERVER_URL } from "../../env";
-import NotFound from "../NotFound";
 
 const FullPost = () => {
   const navigate = useNavigate();
@@ -27,7 +25,9 @@ const FullPost = () => {
     return <Loader />;
   }
 
-  const { data } = blogApi.useGetOnePostQuery(postId, {refetchOnMountOrArgChange: true,});
+  const { data } = blogApi.useGetOnePostQuery(postId, {
+    refetchOnMountOrArgChange: true,
+  });
   const { data: comments } = blogApi.useGetCommentsQuery(postId);
 
   if (!data) {

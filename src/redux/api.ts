@@ -6,7 +6,6 @@ import {
   UpdatePostMutate,
   IPost,
   TypeTags,
-  IInfoPost,
   IInfoComment,
   UploadImageResponse,
   AddNewPostMutate,

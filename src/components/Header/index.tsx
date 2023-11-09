@@ -1,9 +1,9 @@
-import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './Header.module.scss';
-import { useAppDispatch, useAppSelector } from '../../Hook/redux';
-import { setSearchTag, setUser } from '../../redux';
-import Button, { EButtonColor } from '../Button';
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Header.module.scss";
+import { useAppDispatch, useAppSelector } from "../../Hook/redux";
+import { setSearchTag, setUser } from "../../redux";
+import Button, { EButtonColor } from "../Button";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -11,18 +11,18 @@ const Header = () => {
   const user = useAppSelector((state) => state.slice.user);
 
   const onClickLogout = () => {
-    if (window.confirm('Вы действительно хотите выйти?')) {
+    if (window.confirm("Вы действительно хотите выйти?")) {
       dispatch(setUser(null));
-      navigate('/');
+      navigate("/");
     }
   };
 
   React.useEffect(() => {
-    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
   const onClickToHome = () => {
-    dispatch(setSearchTag(''));
+    dispatch(setSearchTag(""));
   };
 
   return (
@@ -38,7 +38,9 @@ const Header = () => {
               <Link to="/create">
                 <Button color={EButtonColor.BLUE}>Создать статью</Button>
               </Link>
-              <Button onClick={onClickLogout} color={EButtonColor.RED}>Выйти</Button>
+              <Button onClick={onClickLogout} color={EButtonColor.RED}>
+                Выйти
+              </Button>
             </>
           ) : (
             <>

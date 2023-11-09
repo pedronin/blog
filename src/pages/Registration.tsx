@@ -33,11 +33,10 @@ const Registration: React.FC = () => {
       password: "",
       avatarUrl: "",
     },
-    reValidateMode: "onChange",
+    reValidateMode: "onBlur",
   });
 
   const onSubmit = async (data: NewUserMutate) => {
-    console.log(data);
     try {
       const newData = await newUser(data).unwrap();
       dispatch(setUser(newData));

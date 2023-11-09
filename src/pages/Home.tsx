@@ -1,13 +1,13 @@
-import React from 'react';
-import { blogApi, setFirstLaunch, setSortTo } from '../redux';
-import { useAppDispatch, useAppSelector } from '../Hook/redux';
-import PostBlock from '../components/PostBlock';
-import TagsBlock from '../components/TagsBlok';
-import Loader from '../components/Loader';
+import React from "react";
+import { blogApi, setFirstLaunch, setSortTo } from "../redux";
+import { useAppDispatch, useAppSelector } from "../Hook/redux";
+import PostBlock from "../components/PostBlock";
+import TagsBlock from "../components/TagsBlok";
+import Loader from "../components/Loader";
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const [activeTab, setActiveTab] = React.useState('new');
+  const [activeTab, setActiveTab] = React.useState("new");
   const { searchTag, sortTo } = useAppSelector((state) => state.slice);
 
   const {
@@ -15,7 +15,7 @@ const Home = () => {
     isLoading: isLoadingItems,
     isFetching,
   } = blogApi.useGetAllPostQuery({
-    tag: searchTag || '',
+    tag: searchTag || "",
     sortTo,
   });
 
@@ -25,7 +25,7 @@ const Home = () => {
     }
   }, [postItems]);
 
-  const { data: tagsItems, error } = blogApi.useGetAllTagsQuery('');
+  const { data: tagsItems, error } = blogApi.useGetAllTagsQuery("");
 
   const onClickToActiveTab = (sortTo: string): void => {
     setActiveTab(sortTo);
@@ -40,20 +40,24 @@ const Home = () => {
     <div className="container">
       <div className="posts__sort">
         <button
-          onClick={() => onClickToActiveTab('new')}
-          className={activeTab === 'new' ? 'active' : ''}>
+          onClick={() => onClickToActiveTab("new")}
+          className={activeTab === "new" ? "active" : ""}
+        >
           Новые
         </button>
         <button
-          onClick={() => onClickToActiveTab('popular')}
-          className={activeTab === 'popular' ? 'active' : ''}>
+          onClick={() => onClickToActiveTab("popular")}
+          className={activeTab === "popular" ? "active" : ""}
+        >
           Популярные
         </button>
       </div>
 
       <div className="flex">
         {error && <h1>Произошла ошибка при загрузке. Проверьту подключение</h1>}
-        {!postItems?.length && !error && <h1>Пока нет не одной написанной статьи.</h1>}
+        {!postItems?.length && !error && (
+          <h1>Пока нет не одной написанной статьи.</h1>
+        )}
         {postItems && (
           <div className="posts">
             {isFetching ? (

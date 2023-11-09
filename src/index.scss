@@ -40,7 +40,7 @@ body {
       color: #4361ee;
 
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         top: 100%;
         left: 0;
@@ -56,7 +56,6 @@ body {
   .posts {
     margin: 10px 0;
     width: 100%;
-
   }
 }
 

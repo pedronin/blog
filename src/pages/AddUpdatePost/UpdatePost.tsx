@@ -1,15 +1,13 @@
 import React from "react";
-import { useForm } from "react-hook-form";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import { useForm } from "react-hook-form";
 import SimpleMDE from "react-simplemde-editor";
-
 import styles from "./AddUpdatePost.module.scss";
-
 import "easymde/dist/easymde.min.css";
+import { SERVER_URL } from "../../env";
 import { IInfoPost, blogApi } from "../../redux";
 import { useAppSelector } from "../../Hook/redux";
 import Button, { EButtonColor } from "../../components/Button";
-import { SERVER_URL } from "../../env";
 
 const AddPost = () => {
   const navigate = useNavigate();
@@ -22,7 +20,6 @@ const AddPost = () => {
 
   const [uploadImage] = blogApi.useUploadImageMutation();
   const [updatePost] = blogApi.useUpdatePostMutation();
-
   const { data } = blogApi.useGetOnePostQuery(id || "");
 
   const {
@@ -45,6 +42,7 @@ const AddPost = () => {
     if (data) {
       setValText(data.text);
       setImageUrl(data.imageUrl || "");
+      setValue("imageUrl", data.imageUrl);
       setValue("title", data.title);
       setValue("tags", data.tags.join(" "));
     }
@@ -122,17 +120,25 @@ const AddPost = () => {
             hidden
           />
 
-          <Button onClick={() => inputFileRef.current?.click()} color={EButtonColor.BORDER_BLUE}>Загрузить превью</Button>
+          <Button
+            onClick={() => inputFileRef.current?.click()}
+            color={EButtonColor.BORDER_BLUE}
+          >
+            Загрузить превью
+          </Button>
 
           {imageUrl && (
-            <Button onClick={onClickRemoveImage} color={EButtonColor.BLUE}>Удалить</Button>
+            <>
+              <Button onClick={onClickRemoveImage} color={EButtonColor.BLUE}>
+                Удалить
+              </Button>
+              <img
+                className={styles.preview}
+                src={`${SERVER_URL}${imageUrl}`}
+              />
+            </>
           )}
-          {imageUrl && (
-            <img
-              className={styles.preview}
-              src={`${SERVER_URL}${imageUrl}`}
-            ></img>
-          )}
+
           {errors.title && (
             <span className={styles.invalid_field}>
               {errors.title?.message}
@@ -160,7 +166,9 @@ const AddPost = () => {
           value={valText}
           options={options}
         />
-        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>Сохранить</Button>
+        <Button onClick={handleSubmit(onSubmit)} color={EButtonColor.BLUE}>
+          Сохранить
+        </Button>
         <Link to="/">
           <Button color={EButtonColor.BORDER_BLUE}>Отмена</Button>
         </Link>
