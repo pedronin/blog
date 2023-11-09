@@ -46,7 +46,6 @@ const AddPost = () => {
       setValText(data.text);
       setImageUrl(data.imageUrl || "");
       setValue("title", data.title);
-      // Ошибка
       setValue("tags", data.tags.join(" "));
     }
   }, [data]);
