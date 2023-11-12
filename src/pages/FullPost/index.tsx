@@ -25,12 +25,14 @@ const FullPost = () => {
     return <Loader />;
   }
 
-  const { data } = blogApi.useGetOnePostQuery(postId, {
+  const { data, isLoading } = blogApi.useGetOnePostQuery(postId, {
     refetchOnMountOrArgChange: true,
   });
   const { data: comments } = blogApi.useGetCommentsQuery(postId);
 
-  if (!data) {
+  if (isLoading) {
+    return <Loader />;
+  } else if (!data) {
     return <NotFound />;
   }
 
