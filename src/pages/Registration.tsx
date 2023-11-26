@@ -96,19 +96,37 @@ const Registration: React.FC = () => {
             hidden
           />
           <InputFormUser
-            errorMessage={errors.fullName?.message}
-            register={register}
+            error={errors.fullName}
             nameInput={"fullName"}
+            {...register("fullName", {
+              minLength: {
+                value: 3,
+                message: "Min length 3 symbols!",
+              },
+              required: true,
+            })}
           />
           <InputFormUser
-            errorMessage={errors.email?.message}
-            register={register}
+            error={errors.email}
             nameInput={"email"}
+            {...register("email", {
+              required: "required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Not valid email!",
+              },
+            })}
           />
           <InputFormUser
-            errorMessage={errors.password?.message}
-            register={register}
+            error={errors.password}
             nameInput={"password"}
+            {...register("password", {
+              minLength: {
+                value: 5,
+                message: "Min length 5 symbols!",
+              },
+              required: true,
+            })}
           />
           <button className={styles.form__submit}>Зарегистрироваться</button>
         </form>

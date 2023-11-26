@@ -1,5 +1,5 @@
 import React from "react";
-import { useForm } from "react-hook-form";
+import { FieldErrors, useForm } from "react-hook-form";
 import styles from "../components/Form.module.scss";
 import { useAppDispatch, useAppSelector } from "../Hook/redux";
 import { LoginUserMutate, blogApi, setUser } from "../redux";
@@ -26,13 +26,12 @@ const Login = () => {
   const [loginUser] = blogApi.useLoginUserMutation();
 
   const onSubmit = async (data: LoginUserMutate) => {
-    console.log(data);
     try {
       const newData = await loginUser(data).unwrap();
       dispatch(setUser(newData));
       navigate("/");
     } catch (err: any) {
-      alert("Неверный логин или пороль")
+      alert("Неверный логин или пороль");
       console.log(err);
     }
   };
@@ -47,15 +46,42 @@ const Login = () => {
         <form onSubmit={handleSubmit(onSubmit)} action="">
           <h4 className={styles.title}>Вход в аккаунт</h4>
 
+          {/* {["email", "password"].map((nameInput, i) => (
+            <InputFormUser
+            key={i}
+              errorMessage={errors[nameInput]?.message}
+              nameInput={"email"}
+              {...register("email", {
+                minLength: {
+                  value: 6,
+                  message: "Min length 6 symbols!",
+                },
+                required: true,
+              })}
+            />
+          ))} */}
+
           <InputFormUser
-            errorMessage={errors.email?.message}
-            register={register}
+            error={errors.email}
             nameInput={"email"}
+            {...register("email", {
+              required: "required",
+              pattern: {
+                value: /\S+@\S+\.\S+/,
+                message: "Not valid email!",
+              },
+            })}
           />
           <InputFormUser
-            errorMessage={errors.password?.message}
-            register={register}
+            error={errors.password}
             nameInput={"password"}
+            {...register("password", {
+              minLength: {
+                value: 5,
+                message: "Min length 5 symbols!",
+              },
+              required: true,
+            })}
           />
           <button className={styles.form__submit}>Войти</button>
         </form>
